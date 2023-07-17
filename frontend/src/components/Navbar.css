@@ -1,0 +1,82 @@
+nav {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
+    /* Center the navbar */
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    /* Center the navbar items */
+}
+
+li {
+    display: inline;
+    margin-right: 10px;
+}
+
+li a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 20px;
+    /* Increase the padding */
+    border-radius: 10px;
+    /* Increase the border radius */
+    font-size: 18px;
+    /* Increase the font size */
+}
+
+li.active a {
+    background-color: #333;
+    color: #fff;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    /* Add margin for spacing */
+}
+
+.dropdown .dropbtn {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 10px 20px;
+    /* Increase the padding */
+    border-radius: 10px;
+    /* Increase the border radius */
+    font-size: 18px;
+    /* Increase the font size */
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f2f2f2;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    /* Add border radius */
+    padding: 10px;
+    /* Add padding */
+    margin-top: 5px;
+    /* Adjust margin for spacing */
+}
+
+.dropdown-content a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    /* Adjust padding */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
