@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
+import axios from "axios";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -13,14 +14,22 @@ const LoginForm = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Reset form
-    setEmail("");
-    setPassword("");
+    try {
+      const response = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
+      console.log("login resp.:");
+      console.log("Login response:", response.data);
+      // Reset form
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.error("Error logging in:", error);
+      // Handle error state
+    }
   };
 
   return (
