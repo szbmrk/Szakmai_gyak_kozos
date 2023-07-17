@@ -1,0 +1,1 @@
+# Szakmai_gyak_kozos
