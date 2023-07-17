@@ -80,3 +80,19 @@ li.active a {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.logout_button {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 20px;
+    /* Increase the padding */
+    border-radius: 10px;
+    /* Increase the border radius */
+    font-size: 18px;
+    /* Increase the font size */
+}
+
+.logout_button:hover {
+    background-color: #333;
+    color: #fff;
+}

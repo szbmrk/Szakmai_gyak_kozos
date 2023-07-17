@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./LoginForm.css";
+import "./StudentLoginForm.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = (props) => {
+const StudentLoginForm = (props) => {
     const role = props.role;
 
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const LoginForm = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:5000/${role}-login`, {
+            const response = await axios.post(`/${role}-login`, {
                 email,
                 password,
             });
@@ -31,12 +31,16 @@ const LoginForm = (props) => {
                 return;
             }
             // Store token in local storage
-            localStorage.setItem("token", response.data[0].student_id);
+            if (role === 'student')
+                localStorage.setItem("token", response.data[0].student_id);
+            else
+                localStorage.setItem("token", response.data[0].teacher_id);
+
             localStorage.setItem("role", role);
             if (role === 'student')
                 navigate(`/student/about`);
             else
-                navigate(`/teacher/courses/add`);
+                navigate(`/teacher/mycourses`);
         } catch (error) {
             console.error("Error logging in:", error);
             // Handle error state
@@ -77,14 +81,14 @@ const LoginForm = (props) => {
                             required
                         />
                     </div>
-                    <button type="submit">Login</button>
+                    <button className="student_button" type="submit">Login</button>
                 </form>
             </div>
-            {role === "student" ? <button onClick={changeLoginPage} type="button">Switch to teacher login page</button> :
-                <button onClick={changeLoginPage} type="button">Switch to student login page</button>}
+            {role === "student" ? <button className="student_button" onClick={changeLoginPage} type="button">Switch to teacher login page</button> :
+                <button className="student_button" onClick={changeLoginPage} type="button">Switch to student login page</button>}
         </div>
 
     );
 };
 
-export default LoginForm;
+export default StudentLoginForm;

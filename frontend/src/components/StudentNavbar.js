@@ -8,7 +8,7 @@ const StudentNavbar = () => {
     const navigate = useNavigate();
 
     const isActive = (path) => {
-        return location.pathname === path ? "active" : "";
+        return location.pathname.startsWith(path) ? "active" : "";
     };
 
     const handleLogout = () => {
@@ -24,14 +24,14 @@ const StudentNavbar = () => {
                 <li className={isActive("/student/about")}>
                     <Link to="/student/about">About</Link>
                 </li>
-                <li className={isActive("/student/mycourses")}>
+                <li className={isActive("/student/mycourses") || isActive("/student/assignments")}>
                     <Link to="/student/mycourses">My Courses</Link>
                 </li>
                 <li className={isActive("/student/enroll")}>
                     <Link to="/student/enroll">Enroll</Link>
                 </li>
                 <li>
-                    <button onClick={handleLogout} >Logout</button>
+                    <button className='logout_button' onClick={handleLogout} >Logout</button>
                 </li>
             </ul>
         </nav>
