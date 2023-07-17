@@ -84,7 +84,7 @@ VALUES
 (2, 3, '2022-04-12'),
 (3, 1, '2022-04-15');
 
-ALTER TABLE Teacher ADD teacher_password VARCHAR(100)
+ALTER TABLE Teacher ADD teacher_password VARCHAR(100);
 UPDATE `teacher` SET `teacher_password` = 'password1' WHERE `teacher`.`teacher_id` = 1;
 UPDATE `teacher` SET `teacher_password` = 'password2' WHERE `teacher`.`teacher_id` = 2;
 UPDATE `teacher` SET `teacher_password` = 'password3' WHERE `teacher`.`teacher_id` = 3;
