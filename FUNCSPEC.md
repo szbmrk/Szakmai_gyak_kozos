@@ -1,6 +1,6 @@
 ## Functional Specification for Szakmai_gyak_kozos
 # Overview
-The Szakmai_gyak_kozos repository contains a web application that seems to be designed for educational purposes. The application appears to have two types of users: students and teachers. The application is divided into a frontend and a backend, with the frontend built using React and the backend built with Node.js.
+The Szakmai_gyak_kozos repository contains a web application is designed for educational purposes. The application appears to have two types of users: students and teachers. The application is divided into a frontend and a backend, with the frontend built using React and the backend built with Node.js.
 
 # Frontend
 The frontend of the application is built using React and contains various components to handle different functionalities. The main components include:
