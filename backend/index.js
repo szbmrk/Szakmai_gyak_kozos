@@ -23,9 +23,8 @@ db.connect((err) => {
     console.log('Connected to the database');
 });
 
-/*
-app.get('/teachers1', (req, res) => {
-    db.query('SELECT teacher.*, GROUP_CONCAT(Course.course_id) AS course_teacher_ids FROM teacher LEFT JOIN course ON teacher.teacher_id = course.teacher_id GROUP BY teacher.teacher_id;', (err, results) => {
+app.get('/teachers', (req, res) => {
+    db.query('SELECT teacher.*, GROUP_CONCAT(Course.course_name) AS courses FROM teacher LEFT JOIN course ON teacher.teacher_id = course.teacher_id GROUP BY teacher.teacher_id;', (err, results) => {
         if (err) {
             console.error('Error retrieving teachers:', err);
             res.status(500).json({ error: 'Failed to retrieve teachers' });
@@ -34,35 +33,6 @@ app.get('/teachers1', (req, res) => {
         res.json(results);
     });
 });
-*/
-
-/*
-app.get('/teachers', async (req, res) => {
-    let teacher = null
-    db.query('SELECT * FROM Teacher', (err, results) => {
-        if (err) {
-            console.error('Error retrieving teachers:', err);
-            res.status(500).json({ error: 'Failed to retrieve teachers' });
-            return;
-        }
-        teacher = results;
-        teacher.forEach((teacher) => {
-            let courses = []
-            db.query(`SELECT * FROM Course WHERE Course.teacher_id = ${teacher.teacher_id}`, async (err, results) => {
-                if (err) {
-                    console.error('Error retrieving courses:', err);
-                    res.status(500).json({ error: 'Failed to retrieve courses' });
-                    return;
-                }
-                courses.push(results);
-            });
-
-            teacher.courses = courses
-        });
-        res.json(teacher);
-    });
-});
-*/
 
 app.get('/courses/:student_id', (req, res) => {
     const student_id = req.params.student_id;
