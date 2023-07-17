@@ -1,11 +1,19 @@
 import express from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
+import mysql from "mysql"
 
 const app = express()
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'elearning_portal',
+});
 
 app.listen(process.env.PORT, () => console.log("Server started on port: 5000"))
