@@ -36,7 +36,7 @@ CREATE TABLE Assignments (
     title VARCHAR(100),
     description TEXT,
     course_id INT,
-    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
 -- Create the Enrollment table
@@ -84,4 +84,8 @@ VALUES
 (2, 3, '2022-04-12'),
 (3, 1, '2022-04-15');
 
-
+ALTER TABLE Teacher ADD teacher_password VARCHAR(100);
+UPDATE `teacher` SET `teacher_password` = 'password1' WHERE `teacher`.`teacher_id` = 1;
+UPDATE `teacher` SET `teacher_password` = 'password2' WHERE `teacher`.`teacher_id` = 2;
+UPDATE `teacher` SET `teacher_password` = 'password3' WHERE `teacher`.`teacher_id` = 3;
+ALTER TABLE `teacher` CHANGE `teacher_password` `teacher_password` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
