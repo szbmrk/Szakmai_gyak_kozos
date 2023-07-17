@@ -36,7 +36,7 @@ CREATE TABLE Assignments (
     title VARCHAR(100),
     description TEXT,
     course_id INT,
-    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
 -- Create the Enrollment table
