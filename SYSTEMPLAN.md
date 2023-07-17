@@ -20,6 +20,7 @@ The frontend is composed of various React components, each serving a specific pu
 
 # Backend
 The backend of the application is built with Node.js. It handles data management and provides API endpoints for the frontend to interact with.
+![Systemplan - Database Structure](/database_structure.png)
 
 # Database
 The backend interacts with a database to store and retrieve data related to courses, assignments, and user information. The DATABASAE.png provides more information about the structure of the Database.
