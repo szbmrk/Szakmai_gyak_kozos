@@ -59,20 +59,45 @@ app.get('/assignments/:course_id', (req, res) => {
     });
 });
 
-app.get('/students', (req, res) => {
-    db.query('SELECT * FROM Student', (err, results) => {
+app.get('/available-courses/:student_id', (req, res) => {
+    const student_id = req.params.student_id;
+    db.query(`SELECT * FROM Course WHERE course_id NOT IN (SELECT course_id FROM Enrollment WHERE student_id = ${student_id})`, (err, results) => {
         if (err) {
-            console.error('Error retrieving students:', err);
-            res.status(500).json({ error: 'Failed to retrieve students' });
+            console.error('Error retrieving available courses:', err);
+            res.status(500).json({ error: 'Failed to retrieve available courses' });
             return;
         }
         res.json(results);
     });
 });
 
-app.post('/login', (req, res) => {
+app.post('/enroll', (req, res) => {
+    const { student_id, course_id } = req.body;
+    db.query(`INSERT INTO Enrollment (student_id, course_id) VALUES (${student_id}, ${course_id})`, (err, results) => {
+        if (err) {
+            console.error('Error enrolling student:', err);
+            res.status(500).json({ error: 'Failed to enroll student' });
+            return;
+        }
+        res.json(results);
+    })
+});
+
+app.post('/student-login', (req, res) => {
     const { email, password } = req.body;
     db.query(`SELECT * FROM Student WHERE student_email = '${email}' AND student_password = '${password}'`, (err, results) => {
+        if (err) {
+            console.error('Error retrieving student:', err);
+            res.status(500).json({ error: 'Failed to retrieve student' });
+            return;
+        }
+        res.json(results);
+    });
+})
+
+app.post('/teacher-login', (req, res) => {
+    const { email, password } = req.body;
+    db.query(`SELECT * FROM Teacher WHERE teacher_email = '${email}' AND teacher_password = '${password}'`, (err, results) => {
         if (err) {
             console.error('Error retrieving student:', err);
             res.status(500).json({ error: 'Failed to retrieve student' });
