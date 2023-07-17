@@ -1,0 +1,87 @@
+-- Create the database
+CREATE DATABASE elearning_portal;
+
+-- Use the database
+USE elearning_portal;
+
+-- Create the Teacher table
+CREATE TABLE Teacher (
+    teacher_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_name VARCHAR(100) NOT NULL,
+    teacher_email VARCHAR(100) NOT NULL,
+    specialty VARCHAR(100)
+);
+
+-- Create the Course table
+CREATE TABLE Course (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(100) NOT NULL,
+    course_description TEXT,
+    teacher_id INT NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id)
+);
+
+-- Create the Student table
+CREATE TABLE Student (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(100) NOT NULL,
+    student_email VARCHAR(100) NOT NULL,
+    student_password VARCHAR(100) NOT NULL,
+    student_enrollment_date DATE
+);
+
+-- Create the Assignments table
+CREATE TABLE Assignments (
+    assignment_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100),
+    description TEXT,
+    course_id INT,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+-- Create the Enrollment table
+CREATE TABLE Enrollment (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT NOT NULL,
+    student_id INT NOT NULL,
+    enrollment_date DATE,
+    FOREIGN KEY (course_id) REFERENCES Course(course_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id)
+);
+-- Sample data for Teacher table:
+INSERT INTO Teacher (teacher_name, teacher_email, specialty)
+VALUES
+('John Smith', 'john.smith@example.com', 'Software Development'),
+('Emily Johnson', 'emily.johnson@example.com', 'Database Management'),
+('Michael Davis', 'michael.davis@example.com', 'Web Development');
+
+-- Sample data for Course table:
+INSERT INTO Course (course_name, course_description, teacher_id)
+VALUES
+('Introduction to Programming', 'An introductory course covering programming basics.', 1),
+('Database Design and Management', 'Learn about designing and managing databases.', 2),
+('Web Development Fundamentals', 'Introduction to web development technologies and concepts.', 3);
+
+-- Sample data for Student table:
+INSERT INTO Student (student_name, student_email, student_password, student_enrollment_date)
+VALUES
+('Sarah Johnson', 'sarah.johnson@example.com', 'password123', '2022-02-15'),
+('David Anderson', 'david.anderson@example.com', 'securepass', '2022-03-01'),
+('Jessica Brown', 'jessica.brown@example.com', 'secretword', '2022-04-10');
+
+-- Sample data for Assignments table:
+INSERT INTO Assignments (title, description, course_id)
+VALUES
+('Assignment 1', 'Create a simple program using any programming language.', 1),
+('Database Project', 'Design a database schema for a given scenario.', 2),
+('Web Development Assignment', 'Build a basic website using HTML, CSS, and JavaScript.', 3);
+
+-- Sample data for Enrollment table:
+INSERT INTO Enrollment (course_id, student_id, enrollment_date)
+VALUES
+(1, 1, '2022-02-18'),
+(1, 2, '2022-02-18'),
+(2, 3, '2022-04-12'),
+(3, 1, '2022-04-15');
+
+
