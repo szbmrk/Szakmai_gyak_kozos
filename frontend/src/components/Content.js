@@ -16,7 +16,7 @@ export default function Content() {
         if (token_temp === undefined) {
             navigate('/login/student');
         }
-    }, [])
+    }, [navigate])
 
     return (
         <>
