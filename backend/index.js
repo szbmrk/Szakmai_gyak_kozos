@@ -107,4 +107,30 @@ app.post('/teacher-login', (req, res) => {
     });
 })
 
+app.get('/own-courses/:teacher_id', (req, res) => {
+    const teacher_id = req.params.teacher_id;
+
+    db.query(`SELECT * FROM Course WHERE teacher_id = ${teacher_id}`, (err, results) => {
+        if (err) {
+            console.error('Error retrieving courses:', err);
+            res.status(500).json({ error: 'Failed to retrieve courses' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+app.post('/assignments/:course_id', (req, res) => {
+    const { assignment_name, assignment_description } = req.body;
+    const course_id = req.params.course_id;
+    db.query(`INSERT INTO Assignments (course_id, assignment_name, assignment_description) VALUES (${course_id}, '${assignment_name}', '${assignment_description}')`, (err, results) => {
+        if (err) {
+            console.error('Error adding assignment:', err);
+            res.status(500).json({ error: 'Failed to add assignment' });
+            return;
+        }
+        res.json(results);
+    });
+})
+
 app.listen(5000, () => console.log(`Server started on port: 5000`))
