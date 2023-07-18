@@ -149,3 +149,14 @@ CREATE TABLE course_contents (
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
+ALTER TABLE states
+ADD COLUMN permission BOOLEAN;
+
+UPDATE states
+SET permission = 
+    CASE 
+        WHEN state_name IN ('submitted', 'pending') THEN FALSE
+        WHEN state_name IN ('graded', 'late') THEN TRUE
+        ELSE permission
+    END;
+
