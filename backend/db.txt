@@ -141,3 +141,11 @@ CREATE TABLE assignment_state (
     FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id),
     FOREIGN KEY (state_id) REFERENCES states(state_id)
 );
+
+CREATE TABLE course_contents (
+    content_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    lecture_text TEXT,
+    FOREIGN KEY (course_id) REFERENCES course(course_id)
+);
+
