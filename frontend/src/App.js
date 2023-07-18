@@ -16,7 +16,7 @@ import NoPermission from "./components/NoPermission";
 const currentRole = localStorage.getItem("role");
 
 const checkPermission = (role, element) => {
-  if (role === currentRole) {
+  if (role == currentRole) {
     return element;
   } else {
     return <NoPermission />;
