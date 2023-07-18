@@ -47,6 +47,18 @@ app.get('/courses/:student_id', (req, res) => {
     });
 });
 
+app.get('/courses/:course_id', (req, res) => {
+    const course_id = req.params.course_id;
+    db.query(`SELECT * FROM course_contents WHERE course_id = ${course_id}`, (err, results) => {
+        if (err) {
+            console.error('Error retrieving course content:', err);
+            res.status(500).json({ error: 'Failed to retrieve course content' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 app.get('/assignments/:course_id', (req, res) => {
     const course_id = req.params.course_id;
     db.query(`SELECT * FROM Assignments WHERE course_id = ${course_id}`, (err, results) => {
