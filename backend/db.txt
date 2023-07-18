@@ -115,3 +115,29 @@ CREATE TABLE assignment_state (
     FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id),
     FOREIGN KEY (state_id) REFERENCES states(state_id)
 );
+
+
+ALTER TABLE Assignments ADD deadline DATE NULL;
+-- Create 'states' table to store different names for assignment states
+CREATE TABLE states (
+    state_id INT AUTO_INCREMENT PRIMARY KEY,
+    state_name VARCHAR(50) NOT NULL
+);
+
+-- Insert some example states into the 'states' table
+INSERT INTO states (state_name) VALUES
+    ('submitted'),
+    ('graded'),
+    ('late'),
+    ('pending');
+
+-- Create 'assignment_state' table that references the 'states' table
+CREATE TABLE assignment_state (
+    assignment_state_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    assignment_id INT,
+    state_id INT,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id),
+    FOREIGN KEY (state_id) REFERENCES states(state_id)
+);
