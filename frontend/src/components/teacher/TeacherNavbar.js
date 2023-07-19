@@ -34,6 +34,9 @@ export default function TeacherNavbar() {
                 <li className={isActive("/teacher/assignments/add")}>
                     <Link to="/teacher/assignments/add">Add Assignment</Link>
                 </li>
+                <li className={isActive("/teacher/content/add")}>
+                    <Link to="/teacher/content/add">Add Content</Link>
+                </li>
                 <li>
                     <button className='logout_button' onClick={handleLogout} >Logout</button>
                 </li>

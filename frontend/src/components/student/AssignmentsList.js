@@ -22,6 +22,7 @@ const AssignmentsList = () => {
                         <th>Assignment ID</th>
                         <th>Assignment Name</th>
                         <th>Description</th>
+                        <th>Deadline</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,7 @@ const AssignmentsList = () => {
                             <td>{assignment.assignment_id}</td>
                             <td>{assignment.title}</td>
                             <td>{assignment.description}</td>
+                            <td>{new Date(assignment.deadline).toLocaleDateString()}</td>
                         </tr>
                     ))}
                 </tbody>

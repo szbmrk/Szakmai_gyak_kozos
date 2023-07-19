@@ -18,9 +18,9 @@ router.get('/:course_id', async (req, res) => {
 
 //create an assignment
 router.post('/:course_id', async (req, res) => {
-    const { assignment_name, assignment_description } = req.body;
+    const { assignment_name, assignment_description, assignment_deadline } = req.body;
     const course_id = req.params.course_id;
-    db.query(`INSERT INTO Assignments (course_id, title, description) VALUES (${course_id}, '${assignment_name}', '${assignment_description}')`, (err, results) => {
+    db.query(`INSERT INTO Assignments (course_id, title, description, deadline) VALUES (${course_id}, '${assignment_name}', '${assignment_description}', '${assignment_deadline}')`, (err, results) => {
         if (err) {
             console.error('Error adding assignment:', err);
             res.status(500).json({ error: 'Failed to add assignment' });
@@ -33,8 +33,8 @@ router.post('/:course_id', async (req, res) => {
 //update an assignment
 router.put('/:assignment_id', async (req, res) => {
     const assignment_id = req.params.assignment_id;
-    const { assignment_name, assignment_description } = req.body;
-    db.query(`UPDATE Assignments SET title = '${assignment_name}', description = '${assignment_description}' WHERE assignment_id = ${assignment_id}`, (err, results) => {
+    const { assignment_name, assignment_description, assignment_deadline } = req.body;
+    db.query(`UPDATE Assignments SET title = '${assignment_name}', description = '${assignment_description}', deadline = '${assignment_deadline}' WHERE assignment_id = ${assignment_id}`, (err, results) => {
         if (err) {
             console.error('Error updating assignment:', err);
             res.status(500).json({ error: 'Failed to update assignment' });

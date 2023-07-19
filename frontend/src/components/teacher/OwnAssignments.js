@@ -6,7 +6,22 @@ const OwnAssignments = () => {
     const [editAssignmentId, setEditAssignmentId] = useState(null);
     const [editAssignmentName, setEditAssignmentName] = useState('');
     const [editAssignmentDescription, setEditAssignmentDescription] = useState('');
+    const [editAssignmentDeadline, setEditAssignmentDeadline] = useState(new Date());
     const teacherId = localStorage.getItem('token');
+
+
+    const tomorrow = new Date(); // Get today's date
+    tomorrow.setDate(tomorrow.getDate() + 1); // Set the date to tomorrow
+
+    const formattedTomorrow = tomorrow.toISOString().split('T')[0]; // Convert to "YYYY-MM-DD" format
+    const formatDate = (dateStr) => {
+        if (!dateStr) return ''; // Handle empty or null values
+        const date = new Date(dateStr);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
     const handleDeleteAssignment = async (assignmentId) => {
         await fetch(`/assignments/${assignmentId}`, {
@@ -21,8 +36,9 @@ const OwnAssignments = () => {
 
     const handleEditAssignment = (assignment) => {
         setEditAssignmentId(assignment.assignment_id);
-        setEditAssignmentName(assignment.assignment_name);
-        setEditAssignmentDescription(assignment.assignment_description);
+        setEditAssignmentName(assignment.title);
+        setEditAssignmentDescription(assignment.description);
+        setEditAssignmentDeadline(new Date(assignment.deadline));
     };
 
     const handleUpdateAssignment = async (e) => {
@@ -31,6 +47,7 @@ const OwnAssignments = () => {
         const updatedAssignmentData = {
             assignment_name: editAssignmentName,
             assignment_description: editAssignmentDescription,
+            assignment_deadline: formatDate(editAssignmentDeadline)
         };
 
         await fetch(`/assignments/${editAssignmentId}`, {
@@ -45,6 +62,7 @@ const OwnAssignments = () => {
                 setEditAssignmentId(null);
                 setEditAssignmentName('');
                 setEditAssignmentDescription('');
+                setEditAssignmentDeadline(new Date());
                 window.location.reload();
             })
             .catch((error) => console.error('Error updating assignment:', error));
@@ -66,6 +84,7 @@ const OwnAssignments = () => {
                         <th>Assignment ID</th>
                         <th>Assignment Name</th>
                         <th>Description</th>
+                        <th>Deadline</th>
                         <th>Course</th>
                         <th>Actions</th>
                     </tr>
@@ -93,6 +112,19 @@ const OwnAssignments = () => {
                                     ></textarea>
                                 ) : (
                                     assignment.description
+                                )}
+                            </td>
+                            <td>
+                                {editAssignmentId === assignment.assignment_id ? (
+                                    <input
+                                        type="date"
+                                        min={formattedTomorrow}
+                                        placeholder="YY:HH:DD"
+                                        value={formatDate(editAssignmentDeadline)}
+                                        onChange={(e) => setEditAssignmentDeadline(e.target.value)}
+                                    />
+                                ) : (
+                                    new Date(assignment.deadline).toLocaleDateString()
                                 )}
                             </td>
                             <td>{assignment.course_name}</td>

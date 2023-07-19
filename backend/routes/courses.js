@@ -83,4 +83,32 @@ router.delete('/:course_id', async (req, res) => {
     });
 });
 
+router.post('/:course_id/content', async (req, res) => {
+    const course_id = req.params.course_id;
+    const { title, lecture_text } = req.body;
+    const query = 'INSERT INTO course_contents (course_id, title, lecture_text) VALUES (?, ?, ?)';
+    const values = [course_id, title, lecture_text];
+
+    db.query(query, values, (err, results) => {
+        if (err) {
+            console.error('Error adding content:', err);
+            res.status(500).json({ error: 'Failed to add content' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+router.get('/:course_id/contents', async (req, res) => {
+    const course_id = req.params.course_id;
+    db.query(`SELECT * FROM course_contents WHERE course_id = ${course_id}`, (err, results) => {
+        if (err) {
+            console.error('Error retrieving content:', err);
+            res.status(500).json({ error: 'Failed to retrieve content' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 export default router;

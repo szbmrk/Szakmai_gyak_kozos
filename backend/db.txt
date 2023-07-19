@@ -151,3 +151,5 @@ UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignme
 UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 2;
 UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 3;
 UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 4;
+
+ALTER TABLE `course_contents` ADD `title` VARCHAR(100) NOT NULL AFTER `lecture_text`;
