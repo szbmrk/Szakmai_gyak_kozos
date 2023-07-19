@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../../styles/student_list.css';
+import '../../styles/list.css';
 
 const AssignmentsList = () => {
     const [assignments, setAssignments] = useState([]);

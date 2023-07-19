@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/student_list.css';
+import '../../styles/list.css';
 
 const CoursesList = () => {
     const studentId = localStorage.getItem('token');
