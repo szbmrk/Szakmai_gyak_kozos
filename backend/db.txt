@@ -89,3 +89,6 @@ UPDATE `teacher` SET `teacher_password` = 'password1' WHERE `teacher`.`teacher_i
 UPDATE `teacher` SET `teacher_password` = 'password2' WHERE `teacher`.`teacher_id` = 2;
 UPDATE `teacher` SET `teacher_password` = 'password3' WHERE `teacher`.`teacher_id` = 3;
 ALTER TABLE `teacher` CHANGE `teacher_password` `teacher_password` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
+
+ALTER TABLE `course` DROP FOREIGN KEY `course_ibfk_1`; ALTER TABLE `course` ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`teacher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `enrollment` DROP FOREIGN KEY `enrollment_ibfk_1`; ALTER TABLE `enrollment` ADD CONSTRAINT `enrollment_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course`(`course_id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `enrollment` DROP FOREIGN KEY `enrollment_ibfk_2`; ALTER TABLE `enrollment` ADD CONSTRAINT `enrollment_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student`(`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
