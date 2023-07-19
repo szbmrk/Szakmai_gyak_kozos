@@ -14,6 +14,7 @@ import OwnAssignments from "./components/teacher/OwnAssignments";
 import NoPermission from "./components/NoPermission";
 import AddContentForm from "./components/teacher/AddContentForm";
 import ContentList from "./components/student/ContentList";
+import AssignmentStates from "./components/teacher/AssignmentStates";
 
 function App() {
     const [currentRole, setCurrentRole] = useState(localStorage.getItem("role"));
@@ -83,8 +84,14 @@ function App() {
             </Routes>
             <Routes>
                 <Route
-                    path="/teacher/assignments/add"
+                    path="/teacher/add-assignments"
                     element={checkPermission("teacher", <AddAssignmentForm />)}
+                />
+            </Routes>
+            <Routes>
+                <Route
+                    path="/teacher/assignments/statuses/:assignmentId"
+                    element={checkPermission("teacher", <AssignmentStates />)}
                 />
             </Routes>
             <Routes>

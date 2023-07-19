@@ -24,7 +24,7 @@ const StudentNavbar = () => {
                 <li className={isActive("/student/about")}>
                     <Link to="/student/about">About</Link>
                 </li>
-                <li className={isActive("/student/mycourses") || isActive("/student/assignments")}>
+                <li className={isActive("/student/mycourses") || isActive("/student/assignments") || isActive("/student/contents")}>
                     <Link to="/student/mycourses">My Courses</Link>
                 </li>
                 <li className={isActive("/student/enroll")}>

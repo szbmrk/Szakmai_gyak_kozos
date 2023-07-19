@@ -37,9 +37,24 @@ router.post('/enroll', async (req, res) => {
         if (err) {
             console.error('Error enrolling student:', err);
             res.status(500).json({ error: 'Failed to enroll student' });
-            return;
         }
-        res.json(results);
+        let assignment_ids = [];
+        db.query(`SELECT assignment_id FROM Assignments WHERE course_id = ${course_id}`, (err, results) => {
+            if (err) {
+                console.error('Error retrieving assignment ids:', err);
+                res.status(500).json({ error: 'Failed to retrieve assignment ids' });
+            }
+            assignment_ids = results.map((result) => result.assignment_id);
+            assignment_ids.forEach((assignment_id) => {
+                db.query(`INSERT INTO assignment_state (student_id, assignment_id) VALUES (${student_id}, ${assignment_id})`, (err, results) => {
+                    if (err) {
+                        console.error('Error adding assignment state:', err);
+                        res.status(500).json({ error: 'Failed to add assignment state' });
+                    }
+                    res.status(200);
+                });
+            });
+        });
     })
 });
 

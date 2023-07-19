@@ -16,7 +16,7 @@ export default function TeacherNavbar() {
 
 
     const isActive = (path) => {
-        return location.pathname === path ? "active" : "";
+        return location.pathname.startsWith(path) ? "active" : "";
     };
 
     return (
@@ -25,14 +25,14 @@ export default function TeacherNavbar() {
                 <li className={isActive("/teacher/mycourses") || isActive("/teacher/courses/delete") || isActive("/teacher/courses/modify")}>
                     <Link to="/teacher/mycourses">My Courses</Link>
                 </li>
-                <li className={isActive("/teacher/assignments")}>
+                <li className={isActive("/teacher/assignments") || isActive("/teacher/assignments/statuses")}>
                     <Link to="/teacher/assignments">My Assignments</Link>
                 </li>
                 <li className={isActive("/teacher/courses/add")}>
                     <Link to="/teacher/courses/add">Add Course</Link>
                 </li>
-                <li className={isActive("/teacher/assignments/add")}>
-                    <Link to="/teacher/assignments/add">Add Assignment</Link>
+                <li className={isActive("/teacher/add-assignments")}>
+                    <Link to="/teacher/add-assignments">Add Assignment</Link>
                 </li>
                 <li className={isActive("/teacher/content/add")}>
                     <Link to="/teacher/content/add">Add Content</Link>

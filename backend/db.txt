@@ -153,3 +153,7 @@ UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignme
 UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 4;
 
 ALTER TABLE `course_contents` ADD `title` VARCHAR(100) NOT NULL AFTER `lecture_text`;
+ALTER TABLE `assignment_state` CHANGE `state_id` `state_id` INT(11) NULL DEFAULT '4';
+
+ALTER TABLE `assignments` DROP FOREIGN KEY `assignments_ibfk_1`; ALTER TABLE `assignments` ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course`(`course_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE `assignment_state` DROP FOREIGN KEY `assignment_state_ibfk_1`; ALTER TABLE `assignment_state` ADD CONSTRAINT `assignment_state_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student`(`student_id`) ON DELETE CASCADE ON UPDATE RESTRICT; ALTER TABLE `assignment_state` DROP FOREIGN KEY `assignment_state_ibfk_2`; ALTER TABLE `assignment_state` ADD CONSTRAINT `assignment_state_ibfk_2` FOREIGN KEY (`assignment_id`) REFERENCES `assignments`(`assignment_id`) ON DELETE CASCADE ON UPDATE RESTRICT; ALTER TABLE `assignment_state` DROP FOREIGN KEY `assignment_state_ibfk_3`; ALTER TABLE `assignment_state` ADD CONSTRAINT `assignment_state_ibfk_3` FOREIGN KEY (`state_id`) REFERENCES `states`(`state_id`) ON DELETE CASCADE ON UPDATE RESTRICT;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/list.css';
 
 const OwnAssignments = () => {
@@ -86,6 +87,7 @@ const OwnAssignments = () => {
                         <th>Description</th>
                         <th>Deadline</th>
                         <th>Course</th>
+                        <th>Statuses</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -128,6 +130,14 @@ const OwnAssignments = () => {
                                 )}
                             </td>
                             <td>{assignment.course_name}</td>
+                            <td>
+                                <Link
+                                    to={`/teacher/assignments/statuses/${assignment.assignment_id}`}
+                                    className="view-contents-link"
+                                >
+                                    View Statuses
+                                </Link>
+                            </td>
                             <td>
                                 {editAssignmentId === assignment.assignment_id ? (
                                     <button onClick={handleUpdateAssignment}>Save</button>
