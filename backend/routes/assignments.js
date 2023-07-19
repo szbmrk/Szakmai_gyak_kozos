@@ -57,4 +57,74 @@ router.delete('/:assignment_id', async (req, res) => {
     });
 });
 
+router.get("/states", (req, res) => {
+    const query = `SELECT * FROM states`;
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).send("Error retrieving states");
+            return;
+        }
+        res.json(results);
+    });
+});
+
+router.get("/assignment_state", (req, res) => {
+    const { studentId, assignmentId } = req.body;
+
+    // SQL query to fetch assignment_state based on student_id and assignment_id
+    const query = `
+      SELECT * FROM assignment_state
+      WHERE student_id = ${studentId} AND assignment_id = ${assignmentId}
+    `;
+
+    // Execute the query
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).send("Error retrieving assignment_state");
+            return;
+        }
+
+        // Send the retrieved assignment_state as the response
+        res.json(results);
+    });
+});
+
+router.get("/:courseId/:studentId", (req, res) => {
+    const courseId = req.params.courseId;
+    const studentId = req.params.studentId;
+
+    // SQL query to retrieve assignment data with assignment_state
+    const query = `
+      SELECT Assignments.assignment_id, Assignments.title, Assignments.description, GROUP_CONCAT(assignment_state.state_id) AS assignment_state
+      FROM Assignments
+      INNER JOIN assignment_state ON Assignments.assignment_id = assignment_state.assignment_id
+      WHERE Assignments.course_id = ${courseId} AND assignment_state.student_id = ${studentId}
+      GROUP BY Assignments.assignment_id
+    `;
+
+    // Execute the query
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).send("Error retrieving assignment data");
+            return;
+        }
+
+        console.log(results);
+
+        // Process the assignment_state as an array
+        const assignmentData = results.map((assignment) => ({
+            assignment_id: assignment.assignment_id,
+            title: assignment.title,
+            description: assignment.description,
+            assignment_state: assignment.assignment_state.split(",").map(Number),
+        }));
+
+        console.log(assignmentData);
+        res.json(assignmentData);
+    });
+});
+
 export default router;
