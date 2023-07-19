@@ -4,15 +4,35 @@ import db from '../db.js';
 const router = express.Router();
 
 //get assignments for a course
-router.get('/:course_id', async (req, res) => {
+router.get('/student/:course_id/:student_id', async (req, res) => {
     const course_id = req.params.course_id;
-    db.query(`SELECT * FROM Assignments WHERE course_id = ${course_id}`, (err, results) => {
+    const student_id = req.params.student_id;
+    db.query(`SELECT * FROM Assignments INNER JOIN assignment_state ON assignments.assignment_id = assignment_state.assignment_id WHERE assignment_state.student_id = ${student_id} AND assignments.course_id = ${course_id}`, async (err, results) => {
         if (err) {
             console.error('Error retrieving assignments:', err);
             res.status(500).json({ error: 'Failed to retrieve assignments' });
             return;
         }
-        res.json(results);
+        let assignments = results;
+
+        assignments.map((assignment) => {
+            switch (assignment.state_id) {
+                case 1:
+                    assignment.state_name = "submitted";
+                    break;
+                case 2:
+                    assignment.state_name = "graded";
+                    break;
+                case 3:
+                    assignment.state_name = "late";
+                    break;
+                case 4:
+                    assignment.state_name = "pending";
+                    break;
+            }
+        })
+
+        res.json(assignments);
     });
 });
 
@@ -73,7 +93,7 @@ router.delete('/:assignment_id', async (req, res) => {
     });
 });
 
-router.get("/states", (req, res) => {
+router.get("/states/get", (req, res) => {
     const query = `SELECT * FROM states`;
     db.query(query, (err, results) => {
         if (err) {
@@ -121,9 +141,9 @@ const getStudent = (student_id) => {
     });
 };
 
-const getState = (student_id) => {
+const getState = (student_id, assignment_id) => {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM assignment_state WHERE student_id = ${student_id}`, (err, results) => {
+        db.query(`SELECT * FROM assignment_state WHERE student_id = ${student_id} AND assignment_id = ${assignment_id}`, (err, results) => {
             if (err) {
                 console.error('Error retrieving assignment state:', err);
                 reject(err);
@@ -168,7 +188,7 @@ router.get('/assignment_state/:assignment_id', async (req, res) => {
                 );
             });
 
-            const state_promises = student_ids.map((student_id) => getState(student_id));
+            const state_promises = student_ids.map((student_id) => getState(student_id, assignment_id));
             const stateResults = await Promise.all(state_promises);
             stateResults.forEach((results) => {
                 results.map((result) => {
@@ -199,6 +219,20 @@ router.get('/assignment_state/:assignment_id', async (req, res) => {
             console.error('Error retrieving students:', error);
             res.status(500).json({ error: 'Failed to retrieve students' });
         }
+    });
+});
+
+router.put('/assignment_state/:student_id/:assignmentId', async (req, res) => {
+    const student_id = req.params.student_id;
+    const assignmentId = req.params.assignmentId;
+    const { state_id } = req.body;
+    db.query(`UPDATE assignment_state SET state_id = ${state_id} WHERE student_id = ${student_id} AND assignment_id = ${assignmentId}`, (err, results) => {
+        if (err) {
+            console.error('Error updating assignment state:', err);
+            res.status(500).json({ error: 'Failed to update assignment state' });
+            return;
+        }
+        res.json(results);
     });
 });
 

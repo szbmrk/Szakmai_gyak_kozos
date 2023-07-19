@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import '../../styles/list.css';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../../styles/list.css";
 
 const AssignmentsList = () => {
     const [assignments, setAssignments] = useState([]);
     const { courseId } = useParams();
+    const student_id = localStorage.getItem("token");
+
 
     useEffect(() => {
-        fetch(`/assignments/${courseId}`)
+        fetch(`/assignments/student/${courseId}/${student_id}`)
             .then((response) => response.json())
-            .then((data) => setAssignments(data))
-            .catch((error) => console.error('Error retrieving assignments:', error));
-    }, [courseId]);
+            .then((data) => {
+                setAssignments(data);
+            })
+            .catch((error) => console.error("Error retrieving assignments:", error));
+    }, [courseId, student_id]);
 
     return (
-        <div data-theme="student" className="list-container">
+        <div className="list-container">
             <h1>Assignments List</h1>
             <table className="list-table">
                 <thead>
@@ -23,6 +27,7 @@ const AssignmentsList = () => {
                         <th>Assignment Name</th>
                         <th>Description</th>
                         <th>Deadline</th>
+                        <th>State</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +37,7 @@ const AssignmentsList = () => {
                             <td>{assignment.title}</td>
                             <td>{assignment.description}</td>
                             <td>{new Date(assignment.deadline).toLocaleDateString()}</td>
+                            <td>{assignment.state_name}</td>
                         </tr>
                     ))}
                 </tbody>
