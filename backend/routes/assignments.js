@@ -3,6 +3,7 @@ import db from '../db.js';
 
 const router = express.Router();
 
+//get assignments for a course
 router.get('/:course_id', async (req, res) => {
     const course_id = req.params.course_id;
     db.query(`SELECT * FROM Assignments WHERE course_id = ${course_id}`, (err, results) => {
@@ -15,6 +16,7 @@ router.get('/:course_id', async (req, res) => {
     });
 });
 
+//create an assignment
 router.post('/:course_id', async (req, res) => {
     const { assignment_name, assignment_description } = req.body;
     const course_id = req.params.course_id;
@@ -28,6 +30,7 @@ router.post('/:course_id', async (req, res) => {
     });
 });
 
+//update an assignment
 router.put('/:assignment_id', async (req, res) => {
     const assignment_id = req.params.assignment_id;
     const { assignment_name, assignment_description } = req.body;
@@ -41,6 +44,7 @@ router.put('/:assignment_id', async (req, res) => {
     });
 });
 
+//delete an assignment
 router.delete('/:assignment_id', async (req, res) => {
     const assignment_id = req.params.assignment_id;
     db.query(`DELETE FROM Assignments WHERE assignment_id = ${assignment_id}`, (err, results) => {

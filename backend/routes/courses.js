@@ -3,6 +3,7 @@ import db from '../db.js';
 
 const router = express.Router();
 
+//get courses for a student
 router.get('/:student_id', async (req, res) => {
     const student_id = req.params.student_id;
     db.query(`SELECT * FROM Course LEFT JOIN Enrollment ON Enrollment.course_id = Course.course_id 
@@ -16,6 +17,7 @@ router.get('/:student_id', async (req, res) => {
     });
 });
 
+//get available courses for a student
 router.get('/available/:student_id', async (req, res) => {
     const student_id = req.params.student_id;
     db.query(`SELECT * FROM Course WHERE course_id NOT IN (SELECT course_id FROM Enrollment WHERE student_id = ${student_id})`, (err, results) => {
@@ -28,6 +30,7 @@ router.get('/available/:student_id', async (req, res) => {
     });
 });
 
+//enroll a student in a course
 router.post('/enroll', async (req, res) => {
     const { student_id, course_id } = req.body;
     db.query(`INSERT INTO Enrollment (student_id, course_id) VALUES (${student_id}, ${course_id})`, (err, results) => {
@@ -40,6 +43,7 @@ router.post('/enroll', async (req, res) => {
     })
 });
 
+//create a course
 router.post('/', async (req, res) => {
     const { teacher_id, course_name, course_description } = req.body;
     db.query(`INSERT INTO Course (teacher_id, course_name, course_description) VALUES (${teacher_id}, '${course_name}', '${course_description}')`, (err, results) => {
@@ -52,6 +56,7 @@ router.post('/', async (req, res) => {
     });
 });
 
+//update a course
 router.put('/:course_id', async (req, res) => {
     const course_id = req.params.course_id;
     const { course_name, course_description } = req.body;
@@ -65,6 +70,7 @@ router.put('/:course_id', async (req, res) => {
     });
 });
 
+//delete a course
 router.delete('/:course_id', async (req, res) => {
     const course_id = req.params.course_id;
     db.query(`DELETE FROM Course WHERE course_id = ${course_id}`, (err, results) => {

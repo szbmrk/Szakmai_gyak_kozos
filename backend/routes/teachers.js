@@ -3,6 +3,7 @@ import db from '../db.js';
 
 const router = express.Router();
 
+//get teachers
 router.get('/', async (req, res) => {
     db.query('SELECT teacher.*, GROUP_CONCAT(Course.course_name) AS courses FROM teacher LEFT JOIN course ON teacher.teacher_id = course.teacher_id GROUP BY teacher.teacher_id;', (err, results) => {
         if (err) {
@@ -14,6 +15,7 @@ router.get('/', async (req, res) => {
     });
 });
 
+//get own assignments
 router.get('/:teacher_id/assignments', async (req, res) => {
     const teacher_id = req.params.teacher_id;
     db.query(`SELECT assignments.*, course.course_name FROM assignments JOIN course ON assignments.course_id = course.course_id JOIN teacher ON course.teacher_id = teacher.teacher_id WHERE teacher.teacher_id = ${teacher_id};`, (err, results) => {
@@ -26,6 +28,7 @@ router.get('/:teacher_id/assignments', async (req, res) => {
     });
 });
 
+//get own courses
 router.get('/:teacher_id/courses', async (req, res) => {
     const teacher_id = req.params.teacher_id;
 
