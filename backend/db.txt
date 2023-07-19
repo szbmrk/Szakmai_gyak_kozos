@@ -10,7 +10,7 @@ CREATE TABLE Teacher (
     teacher_name VARCHAR(100) NOT NULL,
     teacher_email VARCHAR(100) NOT NULL,
     specialty VARCHAR(100),
-    teacher_password VARCHAR(100) NOT NULL
+	teacher_password VARCHAR(100) NOT NULL
 );
 
 -- Create the Course table
@@ -95,7 +95,6 @@ VALUES
 (3, 3, '2022-03-21'),
 (3, 4, '2022-03-22');
 
-ALTER TABLE Teacher ADD teacher_password VARCHAR(100);
 UPDATE `teacher` SET `teacher_password` = 'password1' WHERE `teacher`.`teacher_id` = 1;
 UPDATE `teacher` SET `teacher_password` = 'password2' WHERE `teacher`.`teacher_id` = 2;
 UPDATE `teacher` SET `teacher_password` = 'password3' WHERE `teacher`.`teacher_id` = 3;
@@ -103,3 +102,52 @@ ALTER TABLE `teacher` CHANGE `teacher_password` `teacher_password` VARCHAR(100) 
 
 ALTER TABLE `course` DROP FOREIGN KEY `course_ibfk_1`; ALTER TABLE `course` ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher`(`teacher_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `enrollment` DROP FOREIGN KEY `enrollment_ibfk_1`; ALTER TABLE `enrollment` ADD CONSTRAINT `enrollment_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `course`(`course_id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `enrollment` DROP FOREIGN KEY `enrollment_ibfk_2`; ALTER TABLE `enrollment` ADD CONSTRAINT `enrollment_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `student`(`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE Assignments ADD deadline DATE;
+-- Create 'states' table to store different names for assignment states
+CREATE TABLE states (
+    state_id INT AUTO_INCREMENT PRIMARY KEY,
+    state_name VARCHAR(50) NOT NULL
+);
+
+-- Insert some example states into the 'states' table
+INSERT INTO states (state_name) VALUES
+    ('submitted'),
+    ('graded'),
+    ('late'),
+    ('pending');
+
+-- Create 'assignment_state' table that references the 'states' table
+CREATE TABLE assignment_state (
+    assignment_state_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    assignment_id INT,
+    state_id INT,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id),
+    FOREIGN KEY (state_id) REFERENCES states(state_id)
+);
+
+
+CREATE TABLE course_contents (
+    content_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_id INT,
+    lecture_text TEXT,
+    FOREIGN KEY (course_id) REFERENCES course(course_id)
+);
+
+ALTER TABLE states
+ADD COLUMN permission BOOLEAN;
+
+UPDATE states
+SET permission = 
+    CASE 
+        WHEN state_name IN ('submitted', 'pending') THEN FALSE
+        WHEN state_name IN ('graded', 'late') THEN TRUE
+        ELSE permission
+    END;
+
+UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 1;
+UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 2;
+UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 3;
+UPDATE `assignments` SET `deadline` = '2023-07-31' WHERE `assignments`.`assignment_id` = 4;
