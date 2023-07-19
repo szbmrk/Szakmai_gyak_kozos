@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import './Navbar.css'
+import '../../styles/navbar.css'
 
 export default function TeacherNavbar() {
     const location = useLocation();
@@ -16,7 +16,7 @@ export default function TeacherNavbar() {
 
 
     const isActive = (path) => {
-        return location.pathname.startsWith(path) ? "active" : "";
+        return location.pathname === path ? "active" : "";
     };
 
     return (

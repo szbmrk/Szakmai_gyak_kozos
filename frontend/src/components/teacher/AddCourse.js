@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AddCourse.css';
+import '../../styles/add_form.css';
 
 const AddCourseForm = () => {
     const [courseName, setCourseName] = useState('');
@@ -34,9 +34,9 @@ const AddCourseForm = () => {
     };
 
     return (
-        <div className="add-course-form-container">
+        <div data-theme="teacher" className="form-container">
             <h1>Add Course</h1>
-            <form onSubmit={handleSubmit} className="add-course-form">
+            <form onSubmit={handleSubmit} className="form">
                 <label htmlFor="courseName">Course Name:</label>
                 <input
                     type="text"

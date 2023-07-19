@@ -1,4 +1,4 @@
-.add-assignment-form-container {
+.form-container {
     padding: 20px;
     background-color: #f2f2f2;
     display: flex;
@@ -6,46 +6,37 @@
     flex-direction: column;
     height: 100vh;
     text-align: center;
-    text-align: center;
 }
 
-.add-assignment-form {
+.form {
     width: 300px;
     /* Adjust the width as needed */
     background-color: #333;
     /* White background color */
     padding: 50px;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Box shadow for a subtle depth effect */
 }
 
-.add-assignment-form h1 {
-    text-align: center;
-    color: #ff7f00;
-    /* Orange text color */
-}
-
-.add-assignment-form label {
+.form label {
     display: block;
     margin-bottom: 5px;
     color: #ff7f00;
-    margin-top: 15px;
+    margin-top: 10px;
     /* Orange text color */
 }
 
-.add-assignment-form select,
-.add-assignment-form input,
-.add-assignment-form textarea {
+.form input,
+.form textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ff7f00;
     /* Orange border */
-    border-radius: 4px;
 }
 
-.add-assignment-form .submit-btn {
+.form .submit-btn {
     background-color: #ff7f00;
     /* Orange button background */
     color: #fff;
@@ -57,14 +48,7 @@
     margin-top: 10px;
 }
 
-.add-assignment-form .submit-btn:hover {
+.form .submit-btn:hover {
     background-color: #ff6600;
     /* Darker orange on hover */
-}
-
-.add-assignment-form .success-msg {
-    text-align: center;
-    margin-top: 10px;
-    color: #ff7f00;
-    /* Orange text color */
 }

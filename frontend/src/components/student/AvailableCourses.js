@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import './AvailableCourses.css';
+import '../../styles/teacher_list.css';
 
 const AvailableCourses = () => {
     const [availableCourses, setAvailableCourses] = useState([]);
     const studentId = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch(`/available-courses/${studentId}`)
+        fetch(`/courses/available/${studentId}`)
             .then((response) => response.json())
             .then((data) => setAvailableCourses(data))
             .catch((error) => console.error('Error retrieving available courses:', error));
@@ -15,7 +15,7 @@ const AvailableCourses = () => {
     const handleEnroll = (courseId) => {
         const enrollData = { student_id: studentId, course_id: courseId };
 
-        fetch('/enroll', {
+        fetch('/courses/enroll', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,9 +34,9 @@ const AvailableCourses = () => {
     };
 
     return (
-        <div className="available-courses-container">
+        <div data-theme="student" className="list-container">
             <h1>Available Courses</h1>
-            <table className="available-courses-table">
+            <table className="list-table">
                 <thead>
                     <tr>
                         <th>Course ID</th>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './OwnCourses.css';
+import '../../styles/teacher_list.css';
 
 const OwnAssignments = () => {
     const [assignments, setAssignments] = useState([]);
@@ -51,16 +51,16 @@ const OwnAssignments = () => {
     };
 
     useEffect(() => {
-        fetch(`/assignment/${teacherId}`)
+        fetch(`/teachers/${teacherId}/assignments`)
             .then((response) => response.json())
             .then((data) => setAssignments(data))
             .catch((error) => console.error('Error retrieving assignments:', error));
     }, [teacherId]);
 
     return (
-        <div className="own-courses-container">
+        <div data-theme="teacher" className="list-container">
             <h1>My Assignments</h1>
-            <table className="own-courses-table">
+            <table className="list-table">
                 <thead>
                     <tr>
                         <th>Assignment ID</th>

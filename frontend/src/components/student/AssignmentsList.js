@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './AssignmentsList.css';
+import '../../styles/student_list.css';
 
 const AssignmentsList = () => {
     const [assignments, setAssignments] = useState([]);
@@ -14,9 +14,9 @@ const AssignmentsList = () => {
     }, [courseId]);
 
     return (
-        <div className="assignments-list-container">
+        <div data-theme="student" className="list-container">
             <h1>Assignments List</h1>
-            <table className="assignments-table">
+            <table className="list-table">
                 <thead>
                     <tr>
                         <th>Assignment ID</th>

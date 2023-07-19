@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './CoursesList.css';
+import '../../styles/student_list.css';
 
 const CoursesList = () => {
     const studentId = localStorage.getItem('token');
@@ -14,9 +14,9 @@ const CoursesList = () => {
     }, [studentId]);
 
     return (
-        <div className="courses-list-container">
+        <div data-theme="student" className="list-container">
             <h1>Courses List</h1>
-            <table className="courses-table">
+            <table className="list-table">
                 <thead>
                     <tr>
                         <th>Course ID</th>

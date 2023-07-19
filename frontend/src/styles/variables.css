@@ -1,0 +1,14 @@
+:root {
+    --primary-color: #007bff;
+    --hover-color: #007bff;
+}
+
+[data-theme='student'] {
+    --primary-color: #007bff;
+    --hover-color: #0161c9;
+}
+
+[data-theme='teacher'] {
+    --primary-color: #ff7f00;
+    --hover-color: #df6f00;
+}

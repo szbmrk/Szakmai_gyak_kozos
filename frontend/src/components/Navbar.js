@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import StudentNavbar from './StudentNavbar';
-import TeacherNavbar from './TeacherNavbar';
+import StudentNavbar from './student/StudentNavbar';
+import TeacherNavbar from './teacher/TeacherNavbar';
 
 export default function Content() {
     const [token, setToken] = useState(undefined);

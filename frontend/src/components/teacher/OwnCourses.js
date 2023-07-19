@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './OwnCourses.css';
+import '../../styles/teacher_list.css';
 
 const OwnCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -51,16 +51,16 @@ const OwnCourses = () => {
     };
 
     useEffect(() => {
-        fetch(`/own-courses/${teacherId}`)
+        fetch(`/teachers/${teacherId}/courses`)
             .then((response) => response.json())
             .then((data) => setCourses(data))
             .catch((error) => console.error('Error retrieving courses:', error));
     }, [teacherId]);
 
     return (
-        <div className="own-courses-container">
+        <div data-theme="teacher" className="list-container">
             <h1>My Courses</h1>
-            <table className="own-courses-table">
+            <table className="list-table">
                 <thead>
                     <tr>
                         <th>Course ID</th>

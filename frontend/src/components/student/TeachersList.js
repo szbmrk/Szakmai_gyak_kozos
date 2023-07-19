@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './TeachersList.css';
+import '../../styles/about.css'
 
 const TeachersList = () => {
     const [teachers, setTeachers] = useState([]);

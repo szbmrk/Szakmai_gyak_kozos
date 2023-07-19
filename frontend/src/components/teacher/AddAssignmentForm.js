@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './AddAssignmentForm.css';
+import '../../styles/add_form.css';
 const AddAssignmentForm = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState('');
@@ -9,7 +9,7 @@ const AddAssignmentForm = () => {
     const teacherId = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch(`/own-courses/${teacherId}`)
+        fetch(`/teachers/${teacherId}/courses`)
             .then((response) => response.json())
             .then((data) => setCourses(data))
             .catch((error) => console.error('Error retrieving available courses:', error));
@@ -42,9 +42,9 @@ const AddAssignmentForm = () => {
     };
 
     return (
-        <div className="add-assignment-form-container">
+        <div data-theme="teacher" className="form-container">
             <h1>Add Assignment</h1>
-            <form onSubmit={handleSubmit} className="add-assignment-form">
+            <form onSubmit={handleSubmit} className="form">
                 <label htmlFor="course">Course:</label>
                 <select
                     id="course"
