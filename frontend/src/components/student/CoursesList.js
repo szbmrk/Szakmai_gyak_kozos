@@ -22,6 +22,7 @@ const CoursesList = () => {
                         <th>Course ID</th>
                         <th>Course Name</th>
                         <th>Course Description</th>
+                        <th>Quizzes</th>
                         <th>Assignments</th>
                         <th>Contents</th>
                     </tr>
@@ -33,6 +34,14 @@ const CoursesList = () => {
                                 <td>{course.course_id}</td>
                                 <td>{course.course_name}</td>
                                 <td>{course.course_description}</td>
+                                <td>
+                                    <Link
+                                        to={`/student/quizzes/${course.course_id}`}
+                                        className="view-quizzes-link"
+                                    >
+                                        View Quizzes
+                                    </Link>
+                                </td>
                                 <td>
                                     <Link
                                         to={`/student/assignments/${course.course_id}`}
