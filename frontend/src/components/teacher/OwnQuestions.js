@@ -92,7 +92,7 @@ const OwnQuestions = () => {
                 <tbody>
                     {questions.length !== 0 ?
                         questions.map((question) => (
-                            <tr key={question.question.id}>
+                            <tr key={question.question.id} >
                                 <td>{question.question.id}</td>
                                 <td>{editQuestionId === question.question.id ? (
                                     <input
@@ -150,7 +150,7 @@ const OwnQuestions = () => {
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div >
     );
 };
 
