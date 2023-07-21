@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/list.css';
+import { Link } from 'react-router-dom';
 
 const OwnCourses = () => {
     const [courses, setCourses] = useState([]);
@@ -66,6 +67,7 @@ const OwnCourses = () => {
                         <th>Course ID</th>
                         <th>Course Name</th>
                         <th>Description</th>
+                        <th>Quizzes</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -90,6 +92,14 @@ const OwnCourses = () => {
                             ) : (
                                 course.course_description
                             )}</td>
+                            <td>
+                                <Link
+                                    to={`/teacher/quizzes/${course.course_id}`}
+                                    className="view-contents-link"
+                                >
+                                    View Quizzes
+                                </Link>
+                            </td>
                             <td>
                                 {editCourseId === course.course_id ? (
                                     <button onClick={handleUpdateCourse}>Save</button>

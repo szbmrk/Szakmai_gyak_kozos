@@ -17,6 +17,11 @@ import ContentList from "./components/student/ContentList";
 import AssignmentStates from "./components/teacher/AssignmentStates";
 import QuizzesList from "./components/student/QuizzesList";
 import QuizResults from "./components/student/QuizResults";
+import AddQuizForm from "./components/teacher/AddQuizForm";
+import OwnQuizzes from "./components/teacher/OwnQuizzes";
+import OwnQuestions from "./components/teacher/OwnQuestions";
+import AddQuestionForm from "./components/teacher/AddQuestionForm";
+import ResultsList from "./components/teacher/ResultsList";
 
 function App() {
     const [currentRole, setCurrentRole] = useState(localStorage.getItem("role"));
@@ -50,6 +55,11 @@ function App() {
                 <Route path="/teacher/add-assignments" element={checkPermission("teacher", <AddAssignmentForm />)} />
                 <Route path="/teacher/assignments/statuses/:assignmentId" element={checkPermission("teacher", <AssignmentStates />)} />
                 <Route path="/teacher/content/add" element={checkPermission("teacher", <AddContentForm />)} />
+                <Route path="/teacher/quizzes/:courseId" element={checkPermission("teacher", <OwnQuizzes />)} />
+                <Route path="/teacher/quiz/add" element={checkPermission("teacher", <AddQuizForm />)} />
+                <Route path="/teacher/quizzes/questions/:quizId" element={checkPermission("teacher", <OwnQuestions />)} />
+                <Route path="/teacher/quizzes/questions/add/:quizId" element={checkPermission("teacher", <AddQuestionForm />)} />
+                <Route path="/teacher/quizzes/results/:quizId" element={checkPermission("teacher", <ResultsList />)} />
 
                 <Route path="/login/student" element={<LoginForm role="student" />} />
                 <Route path="/login/teacher" element={<LoginForm role="teacher" />} />

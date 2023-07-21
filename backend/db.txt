@@ -1,0 +1,710 @@
+CREATE DATABASE elearning_merge_quiz;
+
+USE elearning_merge_quiz;
+
+
+-- Tábla szerkezet ehhez a táblához `answers`
+--
+
+CREATE TABLE `answers` (
+  `ID` int(11) NOT NULL,
+  `ANSWER_TEXT` text NOT NULL,
+  `IS_CORRECT` tinyint(1) NOT NULL,
+  `QUESTION_ID` int(11) NOT NULL,
+  `CREATED_AT` timestamp NULL DEFAULT NULL,
+  `UPDATED_AT` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `answers`
+--
+
+INSERT INTO `answers` (`ID`, `ANSWER_TEXT`, `IS_CORRECT`, `QUESTION_ID`, `CREATED_AT`, `UPDATED_AT`) VALUES
+(1, 'Python', 0, 1, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(2, 'C#', 1, 1, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(3, 'Java', 0, 1, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(4, 'Python', 0, 3, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(5, 'C#', 1, 3, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(6, 'Java', 0, 3, '2023-07-20 06:35:48', '2023-07-20 06:35:48');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `assignments`
+--
+
+CREATE TABLE `assignments` (
+  `ASSIGNMENT_ID` int(11) NOT NULL,
+  `TITLE` varchar(100) DEFAULT NULL,
+  `DESCRIPTION` text DEFAULT NULL,
+  `COURSE_ID` int(11) DEFAULT NULL,
+  `DEADLINE` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `assignments`
+--
+
+INSERT INTO `assignments` (`ASSIGNMENT_ID`, `TITLE`, `DESCRIPTION`, `COURSE_ID`, `DEADLINE`) VALUES
+(1, 'Assignment 1', 'Implement a basic software application using Java.', 1, '2023-07-31'),
+(2, 'Assignment 2', 'Design and implement a class hierarchy for a banking system.', 1, '2023-07-31'),
+(3, 'Assignment 1', 'Create a simple website using HTML and CSS.', 3, '2023-07-31'),
+(4, 'Assignment 2', 'Develop a dynamic web application using JavaScript and PHP.', 3, '2023-07-31');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `assignment_state`
+--
+
+CREATE TABLE `assignment_state` (
+  `ASSIGNMENT_STATE_ID` int(11) NOT NULL,
+  `STUDENT_ID` int(11) DEFAULT NULL,
+  `ASSIGNMENT_ID` int(11) DEFAULT NULL,
+  `STATE_ID` int(11) DEFAULT 4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `assignment_state`
+--
+
+INSERT INTO `assignment_state` (`ASSIGNMENT_STATE_ID`, `STUDENT_ID`, `ASSIGNMENT_ID`, `STATE_ID`) VALUES
+(1, 1, 3, 4),
+(2, 1, 4, 4),
+(3, 1, 3, 4),
+(4, 1, 4, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `course`
+--
+
+CREATE TABLE `course` (
+  `COURSE_ID` int(11) NOT NULL,
+  `COURSE_NAME` varchar(100) NOT NULL,
+  `COURSE_DESCRIPTION` text DEFAULT NULL,
+  `TEACHER_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `course`
+--
+
+INSERT INTO `course` (`COURSE_ID`, `COURSE_NAME`, `COURSE_DESCRIPTION`, `TEACHER_ID`) VALUES
+(1, 'Introduction to Software Engineering', 'An overview of software engineering principles and practices.', 1),
+(2, 'Object-Oriented Programming', 'Learn the fundamentals of object-oriented programming concepts.', 2),
+(3, 'Web Development Basics', 'Introduction to web development technologies and techniques.', 3),
+(4, 'Database Management Systems', 'Study various aspects of database management systems.', 4),
+(5, 'Mobile App Development', 'Learn how to develop mobile applications for iOS and Android platforms.', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `course_contents`
+--
+
+CREATE TABLE `course_contents` (
+  `CONTENT_ID` int(11) NOT NULL,
+  `COURSE_ID` int(11) DEFAULT NULL,
+  `TITLE` varchar(100) NOT NULL,
+  `LECTURE_TEXT` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `course_contents`
+--
+
+INSERT INTO `course_contents` (`CONTENT_ID`, `COURSE_ID`, `TITLE`, `LECTURE_TEXT`) VALUES
+(1, 1, 'Example content', 'Here is a brief overview of software engineering:\nSoftware engineering is the systematic application of engineering approaches to the development of software. It aims to create software that is reliable, efficient, maintainable, and that meets user requirements. Some key aspects of software engineering include:\n\nRequirements engineering - Working with stakeholders to identify and document what features the software needs to have. This results in a requirements specification.\n\nSoftware design - Creating models and architectures that describe the structure and behavior of the software. This includes dividing the software into components and designing interfaces.\n\nImplementation - Writing and testing the actual software code based on the design. This is done by programmers.\n\nSoftware testing - Evaluating the code to detect bugs and flaws. This includes unit testing individual components, integration testing how components interact, and validation testing against the requirements.\n\nSoftware maintenance - Making modifications and enhancements to the software after it is deployed. This involves fixing bugs, improving performance, or adapting to new requirements.\n\nSoftware management - Managing the scheduling, staffing, costs, risks, and quality of the project. Project management approaches like agile development are often used.');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `enrollment`
+--
+
+CREATE TABLE `enrollment` (
+  `ENROLLMENT_ID` int(11) NOT NULL,
+  `COURSE_ID` int(11) NOT NULL,
+  `STUDENT_ID` int(11) NOT NULL,
+  `ENROLLMENT_DATE` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `enrollment`
+--
+
+INSERT INTO `enrollment` (`ENROLLMENT_ID`, `COURSE_ID`, `STUDENT_ID`, `ENROLLMENT_DATE`) VALUES
+(1, 1, 1, '2022-01-11'),
+(2, 1, 2, '2022-01-11'),
+(3, 1, 3, '2022-01-12'),
+(4, 2, 2, '2022-02-16'),
+(5, 2, 3, '2022-02-16'),
+(6, 3, 3, '2022-03-21'),
+(7, 3, 4, '2022-03-22'),
+(8, 3, 1, NULL),
+(9, 3, 1, NULL),
+(10, 2, 1, NULL),
+(11, 5, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `questions`
+--
+
+CREATE TABLE `questions` (
+  `ID` int(11) NOT NULL,
+  `QUESTION_TEXT` text NOT NULL,
+  `QUIZ_ID` int(11) NOT NULL,
+  `IMAGE` varchar(255) DEFAULT NULL,
+  `CREATED_AT` timestamp NULL DEFAULT NULL,
+  `UPDATED_AT` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `questions`
+--
+
+INSERT INTO `questions` (`ID`, `QUESTION_TEXT`, `QUIZ_ID`, `IMAGE`, `CREATED_AT`, `UPDATED_AT`) VALUES
+(1, 'Console.WriteLine(\"sample\")', 1, NULL, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(2, 'Example question?', 2, NULL, '2023-07-20 06:35:48', '2023-07-20 06:35:48'),
+(3, 'Console.Readline(\"sample\")', 1, NULL, '2023-07-20 06:35:48', '2023-07-20 06:35:48');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `quizzes`
+--
+
+CREATE TABLE `quizzes` (
+  `ID` int(11) NOT NULL,
+  `TITLE` varchar(255) NOT NULL,
+  `DESCRIPTION` text DEFAULT NULL,
+  `COURSE_ID` int(11) NOT NULL,
+  `CREATED_AT` timestamp NULL DEFAULT NULL,
+  `UPDATED_AT` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `quizzes`
+--
+
+INSERT INTO `quizzes` (`ID`, `TITLE`, `DESCRIPTION`, `COURSE_ID`, `CREATED_AT`, `UPDATED_AT`) VALUES
+(1, 'Program languages', 'C#, Java, Python', 1, '2023-07-20 06:33:35', '2023-07-20 06:33:35'),
+(2, 'No questions in this quiz', 'there are no questions in this quiz', 1, '2023-07-20 06:36:21', '2023-07-20 06:36:21');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `results`
+--
+
+CREATE TABLE `results` (
+  `ID` int(11) NOT NULL,
+  `QUIZ_ID` int(11) NOT NULL,
+  `QUESTION_ID` int(11) NOT NULL,
+  `ANSWER_ID` int(11) NOT NULL,
+  `SURVEY_ID` int(11) NOT NULL,
+  `CREATED_AT` timestamp NULL DEFAULT NULL,
+  `UPDATED_AT` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `results`
+--
+
+INSERT INTO `results` (`ID`, `QUIZ_ID`, `QUESTION_ID`, `ANSWER_ID`, `SURVEY_ID`, `CREATED_AT`, `UPDATED_AT`) VALUES
+(1, 1, 1, 3, 1, '2023-07-20 06:35:59', '2023-07-20 06:35:59'),
+(2, 1, 3, 5, 1, '2023-07-20 06:35:59', '2023-07-20 06:35:59');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `states`
+--
+
+CREATE TABLE `states` (
+  `STATE_ID` int(11) NOT NULL,
+  `STATE_NAME` varchar(50) NOT NULL,
+  `PERMISSION` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `states`
+--
+
+INSERT INTO `states` (`STATE_ID`, `STATE_NAME`, `PERMISSION`) VALUES
+(1, 'submitted', 0),
+(2, 'graded', 1),
+(3, 'late', 1),
+(4, 'pending', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `student`
+--
+
+CREATE TABLE `student` (
+  `STUDENT_ID` int(11) NOT NULL,
+  `STUDENT_NAME` varchar(100) NOT NULL,
+  `STUDENT_EMAIL` varchar(100) NOT NULL,
+  `STUDENT_PASSWORD` varchar(100) NOT NULL,
+  `STUDENT_ENROLLMENT_DATE` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `student`
+--
+
+INSERT INTO `student` (`STUDENT_ID`, `STUDENT_NAME`, `STUDENT_EMAIL`, `STUDENT_PASSWORD`, `STUDENT_ENROLLMENT_DATE`) VALUES
+(1, 'Emily Johnson', 'emilyjohnson@example.com', 'password6', '2022-01-10'),
+(2, 'Matthew Davis', 'matthewdavis@example.com', 'password7', '2022-02-15'),
+(3, 'Olivia Wilson', 'oliviawilson@example.com', 'password8', '2022-03-20'),
+(4, 'Daniel Taylor', 'danieltaylor@example.com', 'password9', '2022-04-25'),
+(5, 'Sophia Anderson', 'sophiaanderson@example.com', 'password10', '2022-05-30');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `student_results`
+--
+
+CREATE TABLE `student_results` (
+  `ID` int(11) NOT NULL,
+  `STUDENT_ID` int(11) NOT NULL,
+  `RESULT_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `student_results`
+--
+
+INSERT INTO `student_results` (`ID`, `STUDENT_ID`, `RESULT_ID`) VALUES
+(1, 1, 1),
+(2, 1, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `surveys`
+--
+
+CREATE TABLE `surveys` (
+  `ID` int(11) NOT NULL,
+  `QUIZ_ID` int(11) NOT NULL,
+  `CREATED_AT` timestamp NULL DEFAULT NULL,
+  `UPDATED_AT` timestamp NULL DEFAULT NULL,
+  `STUDENT_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `surveys`
+--
+
+INSERT INTO `surveys` (`ID`, `QUIZ_ID`, `CREATED_AT`, `UPDATED_AT`, `STUDENT_ID`) VALUES
+(1, 1, '2023-07-20 06:35:59', '2023-07-20 06:35:59', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `teacher`
+--
+
+CREATE TABLE `teacher` (
+  `TEACHER_ID` int(11) NOT NULL,
+  `TEACHER_NAME` varchar(100) NOT NULL,
+  `TEACHER_EMAIL` varchar(100) NOT NULL,
+  `SPECIALTY` varchar(100) DEFAULT NULL,
+  `TEACHER_PASSWORD` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `teacher`
+--
+
+INSERT INTO `teacher` (`TEACHER_ID`, `TEACHER_NAME`, `TEACHER_EMAIL`, `SPECIALTY`, `TEACHER_PASSWORD`) VALUES
+(1, 'John Smith', 'johnsmith@example.com', 'Software Engineering', 'password1'),
+(2, 'Jane Doe', 'janedoe@example.com', 'Computer Science', 'password2'),
+(3, 'David Johnson', 'davidjohnson@example.com', 'Web Development', 'password3'),
+(4, 'Sarah Williams', 'sarahwilliams@example.com', 'Database Management', 'password4'),
+(5, 'Michael Brown', 'michaelbrown@example.com', 'Mobile App Development', 'password5');
+
+--
+-- Indexek a kiírt táblákhoz
+--
+
+--
+-- A tábla indexei `answers`
+--
+ALTER TABLE `answers`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ANSWERS_QUESTION_ID_FOREIGN` (`QUESTION_ID`);
+
+--
+-- A tábla indexei `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`ASSIGNMENT_ID`),
+  ADD KEY `COURSE_ID` (`COURSE_ID`);
+
+--
+-- A tábla indexei `assignment_state`
+--
+ALTER TABLE `assignment_state`
+  ADD PRIMARY KEY (`ASSIGNMENT_STATE_ID`),
+  ADD KEY `STUDENT_ID` (`STUDENT_ID`),
+  ADD KEY `ASSIGNMENT_ID` (`ASSIGNMENT_ID`),
+  ADD KEY `STATE_ID` (`STATE_ID`);
+
+--
+-- A tábla indexei `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`COURSE_ID`),
+  ADD KEY `TEACHER_ID` (`TEACHER_ID`);
+
+--
+-- A tábla indexei `course_contents`
+--
+ALTER TABLE `course_contents`
+  ADD PRIMARY KEY (`CONTENT_ID`),
+  ADD KEY `COURSE_ID` (`COURSE_ID`);
+
+--
+-- A tábla indexei `enrollment`
+--
+ALTER TABLE `enrollment`
+  ADD PRIMARY KEY (`ENROLLMENT_ID`),
+  ADD KEY `COURSE_ID` (`COURSE_ID`),
+  ADD KEY `STUDENT_ID` (`STUDENT_ID`);
+
+--
+-- A tábla indexei `questions`
+--
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `QUESTIONS_QUIZ_ID_FOREIGN` (`QUIZ_ID`);
+
+--
+-- A tábla indexei `quizzes`
+--
+ALTER TABLE `quizzes`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `QUIZZES_USER_ID_FOREIGN` (`COURSE_ID`);
+
+--
+-- A tábla indexei `results`
+--
+ALTER TABLE `results`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `RESULTS_QUIZ_ID_FOREIGN` (`QUIZ_ID`),
+  ADD KEY `RESULTS_QUESTION_ID_FOREIGN` (`QUESTION_ID`),
+  ADD KEY `RESULTS_ANSWER_ID_FOREIGN` (`ANSWER_ID`),
+  ADD KEY `RESULTS_SURVEY_ID_FOREIGN` (`SURVEY_ID`);
+
+--
+-- A tábla indexei `states`
+--
+ALTER TABLE `states`
+  ADD PRIMARY KEY (`STATE_ID`);
+
+--
+-- A tábla indexei `student`
+--
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`STUDENT_ID`);
+
+--
+-- A tábla indexei `student_results`
+--
+ALTER TABLE `student_results`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `STUDENT_ID` (`STUDENT_ID`),
+  ADD KEY `RESULT_ID` (`RESULT_ID`);
+
+--
+-- A tábla indexei `surveys`
+--
+ALTER TABLE `surveys`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `SURVEYS_QUIZ_ID_FOREIGN` (`QUIZ_ID`),
+  ADD KEY `STUDENT_IBFK_1` (`STUDENT_ID`);
+
+--
+-- A tábla indexei `teacher`
+--
+ALTER TABLE `teacher`
+  ADD PRIMARY KEY (`TEACHER_ID`);
+
+--
+-- A kiírt táblák AUTO_INCREMENT értéke
+--
+
+--
+-- AUTO_INCREMENT a táblához `answers`
+--
+ALTER TABLE `answers`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT a táblához `assignments`
+--
+ALTER TABLE `assignments`
+  MODIFY `ASSIGNMENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT a táblához `assignment_state`
+--
+ALTER TABLE `assignment_state`
+  MODIFY `ASSIGNMENT_STATE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT a táblához `course`
+--
+ALTER TABLE `course`
+  MODIFY `COURSE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT a táblához `course_contents`
+--
+ALTER TABLE `course_contents`
+  MODIFY `CONTENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT a táblához `enrollment`
+--
+ALTER TABLE `enrollment`
+  MODIFY `ENROLLMENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT a táblához `questions`
+--
+ALTER TABLE `questions`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT a táblához `quizzes`
+--
+ALTER TABLE `quizzes`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `results`
+--
+ALTER TABLE `results`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT a táblához `states`
+--
+ALTER TABLE `states`
+  MODIFY `STATE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT a táblához `student`
+--
+ALTER TABLE `student`
+  MODIFY `STUDENT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT a táblához `student_results`
+--
+ALTER TABLE `student_results`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `surveys`
+--
+ALTER TABLE `surveys`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT a táblához `teacher`
+--
+ALTER TABLE `teacher`
+  MODIFY `TEACHER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `answers`
+--
+ALTER TABLE `answers`
+  ADD CONSTRAINT `ANSWERS_IBFK_1` FOREIGN KEY (`QUESTION_ID`) REFERENCES `questions` (`ID`) ON DELETE CASCADE;
+
+--
+-- Megkötések a táblához `assignments`
+--
+ALTER TABLE `assignments`
+  ADD CONSTRAINT `ASSIGNMENTS_IBFK_1` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`COURSE_ID`) ON DELETE CASCADE;
+
+--
+-- Megkötések a táblához `assignment_state`
+--
+ALTER TABLE `assignment_state`
+  ADD CONSTRAINT `ASSIGNMENT_STATE_IBFK_1` FOREIGN KEY (`STUDENT_ID`) REFERENCES `student` (`STUDENT_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ASSIGNMENT_STATE_IBFK_2` FOREIGN KEY (`ASSIGNMENT_ID`) REFERENCES `assignments` (`ASSIGNMENT_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ASSIGNMENT_STATE_IBFK_3` FOREIGN KEY (`STATE_ID`) REFERENCES `states` (`STATE_ID`) ON DELETE CASCADE;
+
+--
+-- Megkötések a táblához `course`
+--
+ALTER TABLE `course`
+  ADD CONSTRAINT `COURSE_IBFK_1` FOREIGN KEY (`TEACHER_ID`) REFERENCES `teacher` (`TEACHER_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `course_contents`
+--
+ALTER TABLE `course_contents`
+  ADD CONSTRAINT `COURSE_CONTENTS_IBFK_1` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`COURSE_ID`);
+
+--
+-- Megkötések a táblához `enrollment`
+--
+ALTER TABLE `enrollment`
+  ADD CONSTRAINT `ENROLLMENT_IBFK_1` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`COURSE_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ENROLLMENT_IBFK_2` FOREIGN KEY (`STUDENT_ID`) REFERENCES `student` (`STUDENT_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `questions`
+--
+ALTER TABLE `questions`
+  ADD CONSTRAINT `QUESTIONS_IBFK_1` FOREIGN KEY (`QUIZ_ID`) REFERENCES `quizzes` (`ID`) ON DELETE CASCADE;
+
+--
+-- Megkötések a táblához `quizzes`
+--
+ALTER TABLE `quizzes`
+  ADD CONSTRAINT `FK_COURSE` FOREIGN KEY (`COURSE_ID`) REFERENCES `course` (`COURSE_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `results`
+--
+ALTER TABLE `results`
+  ADD CONSTRAINT `RESULTS_IBFK_1` FOREIGN KEY (`QUIZ_ID`) REFERENCES `quizzes` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `RESULTS_IBFK_2` FOREIGN KEY (`QUESTION_ID`) REFERENCES `questions` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `RESULTS_IBFK_3` FOREIGN KEY (`ANSWER_ID`) REFERENCES `answers` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `RESULTS_IBFK_4` FOREIGN KEY (`SURVEY_ID`) REFERENCES `surveys` (`ID`) ON DELETE CASCADE;
+
+--
+-- Megkötések a táblához `surveys`
+--
+ALTER TABLE `surveys`
+  ADD CONSTRAINT `STUDENT_IBFK_1` FOREIGN KEY (`STUDENT_ID`) REFERENCES `student` (`STUDENT_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `SURVEYS_IBFK_1` FOREIGN KEY (`QUIZ_ID`) REFERENCES `quizzes` (`ID`) ON DELETE CASCADE;
+
+-- Rename columns in answers table
+ALTER TABLE `answers` 
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `ANSWER_TEXT` `answer_text` TEXT NOT NULL,
+  CHANGE `IS_CORRECT` `is_correct` TINYINT(1) NOT NULL, 
+  CHANGE `QUESTION_ID` `question_id` INT(11) NOT NULL,
+  CHANGE `CREATED_AT` `created_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `UPDATED_AT` `updated_at` TIMESTAMP NULL DEFAULT NULL;
+
+-- Rename columns in assignments table  
+ALTER TABLE `assignments` 
+  CHANGE `ASSIGNMENT_ID` `assignment_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `TITLE` `title` VARCHAR(100) DEFAULT NULL,
+  CHANGE `DESCRIPTION` `description` TEXT DEFAULT NULL,
+  CHANGE `COURSE_ID` `course_id` INT(11) DEFAULT NULL,
+  CHANGE `DEADLINE` `deadline` DATE DEFAULT NULL;
+  
+-- Rename columns in assignment_state table
+ALTER TABLE `assignment_state`
+  CHANGE `ASSIGNMENT_STATE_ID` `assignment_state_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `STUDENT_ID` `student_id` INT(11) DEFAULT NULL,
+  CHANGE `ASSIGNMENT_ID` `assignment_id` INT(11) DEFAULT NULL,
+  CHANGE `STATE_ID` `state_id` INT(11) DEFAULT 4;
+  
+-- Rename columns in course table  
+ALTER TABLE `course`
+  CHANGE `COURSE_ID` `course_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `COURSE_NAME` `course_name` VARCHAR(100) NOT NULL,
+  CHANGE `COURSE_DESCRIPTION` `course_description` TEXT DEFAULT NULL,
+  CHANGE `TEACHER_ID` `teacher_id` INT(11) NOT NULL;
+  
+-- Rename columns in course_contents table
+ALTER TABLE `course_contents`
+  CHANGE `CONTENT_ID` `content_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `COURSE_ID` `course_id` INT(11) DEFAULT NULL,
+  CHANGE `TITLE` `title` VARCHAR(100) NOT NULL,
+  CHANGE `LECTURE_TEXT` `lecture_text` TEXT DEFAULT NULL;
+  
+-- Rename columns in enrollment table
+ALTER TABLE `enrollment`
+  CHANGE `ENROLLMENT_ID` `enrollment_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `COURSE_ID` `course_id` INT(11) NOT NULL,
+  CHANGE `STUDENT_ID` `student_id` INT(11) NOT NULL,
+  CHANGE `ENROLLMENT_DATE` `enrollment_date` DATE DEFAULT NULL;
+  
+-- Rename columns in questions table
+ALTER TABLE `questions`
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `QUESTION_TEXT` `question_text` TEXT NOT NULL,
+  CHANGE `QUIZ_ID` `quiz_id` INT(11) NOT NULL,
+  CHANGE `IMAGE` `image` VARCHAR(255) DEFAULT NULL,
+  CHANGE `CREATED_AT` `created_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `UPDATED_AT` `updated_at` TIMESTAMP NULL DEFAULT NULL;
+
+-- Rename columns in quizzes table
+ALTER TABLE `quizzes` 
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `TITLE` `title` VARCHAR(255) NOT NULL,
+  CHANGE `DESCRIPTION` `description` TEXT DEFAULT NULL,
+  CHANGE `COURSE_ID` `course_id` INT(11) NOT NULL,
+  CHANGE `CREATED_AT` `created_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `UPDATED_AT` `updated_at` TIMESTAMP NULL DEFAULT NULL;
+  
+-- Rename columns in results table
+ALTER TABLE `results`
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `QUIZ_ID` `quiz_id` INT(11) NOT NULL,
+  CHANGE `QUESTION_ID` `question_id` INT(11) NOT NULL,
+  CHANGE `ANSWER_ID` `answer_id` INT(11) NOT NULL,
+  CHANGE `SURVEY_ID` `survey_id` INT(11) NOT NULL,
+  CHANGE `CREATED_AT` `created_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `UPDATED_AT` `updated_at` TIMESTAMP NULL DEFAULT NULL;
+  
+-- Rename columns in states table
+ALTER TABLE `states`
+  CHANGE `STATE_ID` `state_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `STATE_NAME` `state_name` VARCHAR(50) NOT NULL,
+  CHANGE `PERMISSION` `permission` TINYINT(1) DEFAULT NULL;
+  
+-- Rename columns in student table
+ALTER TABLE `student`
+  CHANGE `STUDENT_ID` `student_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `STUDENT_NAME` `student_name` VARCHAR(100) NOT NULL,
+  CHANGE `STUDENT_EMAIL` `student_email` VARCHAR(100) NOT NULL,
+  CHANGE `STUDENT_PASSWORD` `student_password` VARCHAR(100) NOT NULL,
+  CHANGE `STUDENT_ENROLLMENT_DATE` `student_enrollment_date` DATE DEFAULT NULL;
+  
+-- Rename columns in student_results table  
+ALTER TABLE `student_results`
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `STUDENT_ID` `student_id` INT(11) NOT NULL,
+  CHANGE `RESULT_ID` `result_id` INT(11) NOT NULL;
+  
+-- Rename columns in surveys table
+ALTER TABLE `surveys`
+  CHANGE `ID` `id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `QUIZ_ID` `quiz_id` INT(11) NOT NULL,
+  CHANGE `CREATED_AT` `created_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `UPDATED_AT` `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  CHANGE `STUDENT_ID` `student_id` INT(11) NOT NULL;
+  
+-- Rename columns in teacher table
+ALTER TABLE `teacher`
+  CHANGE `TEACHER_ID` `teacher_id` INT(11) AUTO_INCREMENT NOT NULL,
+  CHANGE `TEACHER_NAME` `teacher_name` VARCHAR(100) NOT NULL,
+  CHANGE `TEACHER_EMAIL` `teacher_email` VARCHAR(100) NOT NULL,
+  CHANGE `SPECIALTY` `specialty` VARCHAR(100) DEFAULT NULL,
+  CHANGE `TEACHER_PASSWORD` `teacher_password` VARCHAR(100) NOT NULL;
+
+COMMIT;
