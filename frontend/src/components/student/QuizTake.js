@@ -19,8 +19,6 @@ const QuizTake = () => {
         setQuiz({ ...quiz, questions });
         setTimer(response.data.maxDuration);
         startTimer(response.data.maxDuration);
-        console.log(quiz);
-        console.log(questions);
       })
       .catch((error) => console.error('Error fetching quiz data:', error));
   }, [quizId]);
@@ -42,17 +40,8 @@ const QuizTake = () => {
       clearInterval(intervalId);
       setIsFormSubmitted(true);
       setIsBlinking(false);
-      setTimer(0); // Reset the timer to 0
     }, duration * 1000);
   };
-
-  useEffect(() => {
-    if (timer === 0) {
-      setIsBlinking(true);
-    } else {
-      setIsBlinking(false);
-    }
-  }, [timer]);
 
   const handleAnswerSelection = (questionId, answerId) => {
     setAnswers((prevAnswers) => ({
@@ -61,11 +50,37 @@ const QuizTake = () => {
     }));
   };
 
-  const handleSubmitQuiz = () => {
+
+  const handleSubmitQuiz = (e) => {
+    e.preventDefault();
     console.log('Selected answers:', answers);
-    // Implement the logic to submit the quiz with the selected answers
-    // You can send the answers to the backend here using a fetch or axios request
-    // Remember to include the quizId and studentId (if applicable) in the request body
+    
+    // Create a data object to send to the backend
+    const data = {
+      studentId: 123, // Replace with the actual student ID (if applicable)
+      answers: Object.entries(answers).map(([questionId, answerId]) => ({
+        questionId: parseInt(questionId),
+        answerId: parseInt(answerId),
+      })),
+    };
+  
+    // Make the HTTP POST request to submit the quiz
+    axios
+      .post(`http://localhost:5000/quizzes/submit/${quizId}`, data)
+      .then((response) => {
+        console.log('Quiz submitted successfully:', response.data);
+        // Implement any further logic or user feedback if needed
+      })
+      .catch((error) => {
+        console.error('Error submitting quiz:', error);
+        // Implement error handling or user feedback if needed
+      });
+  };
+
+  const handleResetQuiz = () => {
+    setAnswers({});
+    setIsFormSubmitted(false);
+    startTimer(quiz.maxDuration);
   };
 
   if (!quiz) {
@@ -91,7 +106,12 @@ const QuizTake = () => {
                     {(timer % 60).toString().padStart(2, '0')}
                   </>
                 ) : (
-                  'Time has expired'
+                  <>
+                    Time has expired
+                    <button className="reset-button" onClick={handleResetQuiz}>
+                      Reset Quiz
+                    </button>
+                  </>
                 )}
               </div>
 
