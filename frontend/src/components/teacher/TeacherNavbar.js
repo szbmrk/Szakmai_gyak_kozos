@@ -22,7 +22,7 @@ export default function TeacherNavbar() {
     return (
         <nav>
             <ul>
-                <li className={isActive("/teacher/mycourses") || isActive("/teacher/courses/delete") || isActive("/teacher/courses/modify")}>
+                <li className={isActive("/teacher/mycourses") || isActive("/teacher/quizzes")}>
                     <Link to="/teacher/mycourses">My Courses</Link>
                 </li>
                 <li className={isActive("/teacher/assignments") || isActive("/teacher/assignments/statuses")}>
@@ -36,6 +36,9 @@ export default function TeacherNavbar() {
                 </li>
                 <li className={isActive("/teacher/content/add")}>
                     <Link to="/teacher/content/add">Add Content</Link>
+                </li>
+                <li className={isActive("/teacher/quiz/add")}>
+                    <Link to="/teacher/quiz/add">Add Quiz</Link>
                 </li>
                 <li>
                     <button className='logout_button' onClick={handleLogout} >Logout</button>

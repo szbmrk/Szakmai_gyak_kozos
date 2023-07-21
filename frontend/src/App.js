@@ -15,6 +15,14 @@ import NoPermission from "./components/NoPermission";
 import AddContentForm from "./components/teacher/AddContentForm";
 import ContentList from "./components/student/ContentList";
 import AssignmentStates from "./components/teacher/AssignmentStates";
+import QuizzesList from "./components/student/QuizzesList";
+import QuizResults from "./components/student/QuizResults";
+import AddQuizForm from "./components/teacher/AddQuizForm";
+import OwnQuizzes from "./components/teacher/OwnQuizzes";
+import OwnQuestions from "./components/teacher/OwnQuestions";
+import AddQuestionForm from "./components/teacher/AddQuestionForm";
+import ResultsList from "./components/teacher/ResultsList";
+import QuizTake from "./components/student/QuizTake";
 
 function App() {
     const [currentRole, setCurrentRole] = useState(localStorage.getItem("role"));
@@ -35,82 +43,28 @@ function App() {
                 <Route path="*" element={<Navbar />} />
             </Routes>
             <Routes>
-                <Route
-                    path="/student/about"
-                    element={checkPermission("student", <TeachersList />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/student/mycourses"
-                    element={checkPermission("student", <CoursesList />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/student/assignments/:courseId"
-                    element={checkPermission("student", <AssignmentsList />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/student/contents/:courseId"
-                    element={checkPermission("student", <ContentList />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/student/enroll"
-                    element={checkPermission("student", <AvailableCourses />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/mycourses"
-                    element={checkPermission("teacher", <OwnCourses />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/courses/add"
-                    element={checkPermission("teacher", <AddCourse />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/assignments"
-                    element={checkPermission("teacher", <OwnAssignments />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/add-assignments"
-                    element={checkPermission("teacher", <AddAssignmentForm />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/assignments/statuses/:assignmentId"
-                    element={checkPermission("teacher", <AssignmentStates />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/teacher/content/add"
-                    element={checkPermission("teacher", <AddContentForm />)}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/login/student"
-                    element={<LoginForm role="student" />}
-                />
-            </Routes>
-            <Routes>
-                <Route
-                    path="/login/teacher"
-                    element={<LoginForm role="teacher" />}
-                />
+                <Route path="/student/about" element={checkPermission("student", <TeachersList />)} />
+                <Route path="/student/mycourses" element={checkPermission("student", <CoursesList />)} />
+                <Route path="/student/assignments/:courseId" element={checkPermission("student", <AssignmentsList />)} />
+                <Route path="/student/contents/:courseId" element={checkPermission("student", <ContentList />)} />
+                <Route path="/student/quizzes/:courseId" element={checkPermission("student", <QuizzesList />)} />
+                <Route path="/student/quizzes/take/:quizId" element={checkPermission("student", <QuizTake />)} />
+                <Route path="/student/quizzes/results/:quizId" element={checkPermission("student", <QuizResults />)} />
+                <Route path="/student/enroll" element={checkPermission("student", <AvailableCourses />)} />
+                <Route path="/teacher/mycourses" element={checkPermission("teacher", <OwnCourses />)} />
+                <Route path="/teacher/courses/add" element={checkPermission("teacher", <AddCourse />)} />
+                <Route path="/teacher/assignments" element={checkPermission("teacher", <OwnAssignments />)} />
+                <Route path="/teacher/add-assignments" element={checkPermission("teacher", <AddAssignmentForm />)} />
+                <Route path="/teacher/assignments/statuses/:assignmentId" element={checkPermission("teacher", <AssignmentStates />)} />
+                <Route path="/teacher/content/add" element={checkPermission("teacher", <AddContentForm />)} />
+                <Route path="/teacher/quizzes/:courseId" element={checkPermission("teacher", <OwnQuizzes />)} />
+                <Route path="/teacher/quiz/add" element={checkPermission("teacher", <AddQuizForm />)} />
+                <Route path="/teacher/quizzes/questions/:quizId" element={checkPermission("teacher", <OwnQuestions />)} />
+                <Route path="/teacher/quizzes/questions/add/:quizId" element={checkPermission("teacher", <AddQuestionForm />)} />
+                <Route path="/teacher/quizzes/results/:quizId" element={checkPermission("teacher", <ResultsList />)} />
+
+                <Route path="/login/student" element={<LoginForm role="student" />} />
+                <Route path="/login/teacher" element={<LoginForm role="teacher" />} />
             </Routes>
         </BrowserRouter>
     );

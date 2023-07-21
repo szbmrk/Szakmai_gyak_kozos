@@ -11,7 +11,6 @@ export default function Content() {
     useEffect(() => {
         setToken(localStorage.getItem('token'));
         setRole(localStorage.getItem('role'));
-        console.log(localStorage.getItem('role'))
         let token_temp = localStorage.getItem('token');
         if (token_temp === undefined) {
             navigate('/login/student');

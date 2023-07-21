@@ -46,7 +46,8 @@ button:hover {
     border-radius: 5px;
 }
 
-h1 {
+h1,
+h3 {
     text-align: center;
     margin-bottom: 20px;
 }
