@@ -69,6 +69,140 @@ router.get('/results/:quizId', (req, res) => {
     });
 });
 
+router.get('/take/:quizId', (req, res) => {
+    const quizId = req.params.quizId;
+
+    db.query(
+        'SELECT q.id AS quiz_id, q.title AS quiz_title, q.description AS quiz_description, ' +
+        'que.id AS question_id, que.question_text, que.image AS question_image, ' +
+        'ans.id AS answer_id, ans.answer_text, ans.is_correct ' +
+        'FROM quizzes q ' +
+        'LEFT JOIN questions que ON q.id = que.quiz_id ' +
+        'LEFT JOIN answers ans ON que.id = ans.question_id ' +
+        'WHERE q.id = ?',
+        [quizId],
+        (error, results) => {
+            if (error) {
+                console.error(error);
+                res.status(500).json({ error: 'An error occurred' });
+            } else {
+                // Group the data by quiz and process the duration calculation
+                const quizData = results.reduce((acc, row) => {
+                    if (!acc.quiz) {
+                        acc.quiz = {
+                            id: row.quiz_id,
+                            title: row.quiz_title,
+                            description: row.quiz_description,
+                        };
+                    }
+
+                    if (!acc.questions) {
+                        acc.questions = [];
+                    }
+
+                    // Check if the question already exists in the acc.questions array
+                    const existingQuestion = acc.questions.find(
+                        (question) => question.id === row.question_id
+                    );
+
+                    if (!existingQuestion) {
+                        // If the question doesn't exist, add it to the acc.questions array
+                        acc.questions.push({
+                            id: row.question_id,
+                            question_text: row.question_text,
+                            image: row.question_image,
+                            answers: [], // Create an empty array to store the answers
+                        });
+                    }
+
+                    // Find the question in the acc.questions array and add the answer to it
+                    const currentQuestion = acc.questions.find(
+                        (question) => question.id === row.question_id
+                    );
+                    if (row.answer_id) {
+                        currentQuestion.answers.push({
+                            id: row.answer_id,
+                            answer_text: row.answer_text,
+                            is_correct: row.is_correct,
+                        });
+                    }
+
+                    return acc;
+                }, {});
+
+                // Randomize the order of questions
+                quizData.questions = shuffleArray(quizData.questions);
+
+                // Shuffle the answers for each question
+                quizData.questions.forEach((question) => {
+                    question.answers = shuffleArray(question.answers);
+                });
+
+                // Calculate maximum duration
+                const maxDuration = quizData.questions.length * 30;
+
+                res.json({
+                    quiz: quizData.quiz,
+                    questions: quizData.questions,
+                    maxDuration,
+                });
+            }
+        }
+    );
+});
+
+
+
+function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
+
+// POST /submit/:quizId - Submit Quiz Answers
+router.post('/submit/:quizId', (req, res) => {
+    console.log("submitted");
+    const quizId = req.params.quizId;
+    const studentId = req.body.studentId; // Assuming the student ID is provided in the request body
+    const answers = req.body.answers; // Assuming the answers are provided in the request body
+
+    // Validate that studentId and answers are provided
+    if (!studentId || !Array.isArray(answers) || answers.length === 0) {
+        return res.status(400).json({ error: 'Invalid data provided for quiz submission.' });
+    }
+
+    answers.forEach((answer) => {
+        // insert into results
+        const insertResultsQuery = 'INSERT INTO results (quiz_id, question_id, answer_id, survey_id ) VALUES (?, ?, ?, ?)';
+        const values = [quizId, answer.questionId, answer.answerId, 1];
+        db.query(insertResultsQuery, values, (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).json({ error: 'An error occurred while storing quiz results.' });
+            }
+            //insert into student_results
+            const resultId = results.insertId; // Assuming the result ID is automatically generated by the database
+            const insertStudentResultsQuery = 'INSERT INTO student_results (student_id, result_id) VALUES (?, ?)';
+            db.query(insertStudentResultsQuery, [studentId, resultId], (error) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).json({ error: 'An error occurred while storing quiz results for the student.' });
+                }
+            });
+        });
+    });
+
+    res.send("success");
+});
+
 router.get('/:studentId/:quizId', (req, res) => {
     const studentId = req.params.studentId;
     const quizId = req.params.quizId;
@@ -91,6 +225,36 @@ router.get('/:studentId/:quizId', (req, res) => {
     });
 });
 
+
+router.get('/questions/get/:quizId', (req, res) => {
+    const quizId = req.params.quizId;
+    const sql = `SELECT * FROM questions WHERE quiz_id = ${quizId}`;
+    db.query(sql, (err, question_results) => {
+        if (err) {
+            console.error('Error retrieving questions:', err);
+            res.status(500).json({ error: 'Failed to retrieve questions' });
+            return;
+        }
+        let final_result = [];
+        let promises = question_results.map((element) => {
+            return new Promise((resolve, reject) => {
+                let question_id = element.id;
+                db.query(`SELECT * FROM answers WHERE question_id = ${question_id}`, (err, answer_results) => {
+                    if (err) reject(err);
+                    final_result.push({
+                        question: element,
+                        answers: answer_results
+                    });
+                    resolve();
+                });
+            });
+        }
+        );
+        Promise.all(promises)
+            .then(() => res.json(final_result))
+            .catch((error) => console.error('Error retrieving results:', error));
+    });
+});
 
 router.get('/results/:studentId/:quizId', (req, res) => {
     const quizId = req.params.quizId;
@@ -186,36 +350,6 @@ router.delete('/:quizId', (req, res) => {
     });
 });
 
-router.get('/questions/get/:quizId', (req, res) => {
-    const quizId = req.params.quizId;
-    const sql = `SELECT * FROM questions WHERE quiz_id = ${quizId}`;
-    db.query(sql, (err, question_results) => {
-        if (err) {
-            console.error('Error retrieving questions:', err);
-            res.status(500).json({ error: 'Failed to retrieve questions' });
-            return;
-        }
-        let final_result = [];
-        let promises = question_results.map((element) => {
-            return new Promise((resolve, reject) => {
-                let question_id = element.id;
-                db.query(`SELECT * FROM answers WHERE question_id = ${question_id}`, (err, answer_results) => {
-                    if (err) reject(err);
-                    final_result.push({
-                        question: element,
-                        answers: answer_results
-                    });
-                    resolve();
-                });
-            });
-        }
-        );
-        Promise.all(promises)
-            .then(() => res.json(final_result))
-            .catch((error) => console.error('Error retrieving results:', error));
-    });
-});
-
 router.put('/questions/:questionId', (req, res) => {
     const questionId = req.params.questionId;
     const questionText = req.body.question_text;
@@ -280,8 +414,8 @@ router.post('/questions/:quizId', (req, res) => {
             .then(() => res.json(results))
             .catch((error) => console.error('Error retrieving results:', error));
     });
-});
 
+});
 
 
 export default router;

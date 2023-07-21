@@ -1,0 +1,61 @@
+/* take.css */
+
+/* Override Bootstrap's default font family */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Center the quiz vertically and horizontally */
+  .quiz-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the start of the container */
+    min-height: 100vh;
+  }
+  
+  /* Add padding and border radius to the quiz card */
+  .quiz-card {
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px; /* Limiting the card width */
+  }
+  
+  /* Style the timer */
+  #timer {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Blinking animation for timer */
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  .blink {
+    animation: blink 1s step-start infinite;
+  }
+  
+  /* Center "Take the quiz" heading */
+  .quiz-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Fixed height for questions and answers */
+  .quiz-question,
+  .quiz-answer {
+    min-height: 80px; /* Set a fixed height for both questions and answers */
+  }
+  
+  /* Center the submit button */
+  .quiz-button {
+    display: block;
+    margin: 20px auto; /* Add margin at the top and bottom to separate from the questions */
+  }
+  
