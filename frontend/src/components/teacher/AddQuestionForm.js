@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const AddQuestionForm = () => {
     const [question_text, setQuestion_text] = useState('');
     const [answers, setAnswers] = useState([
-        { id: 1, answer_text: '', is_correct: 0 },
+        { id: 1, answer_text: '', is_correct: 1 },
         { id: 2, answer_text: '', is_correct: 0 },
         { id: 3, answer_text: '', is_correct: 0 },
         { id: 4, answer_text: '', is_correct: 0 },
