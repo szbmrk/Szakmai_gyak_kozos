@@ -7,6 +7,7 @@ const QuizResults = () => {
     const { quizId } = useParams();
     const [results, setResults] = useState([]);
 
+
     useEffect(() => {
         fetch(`/quizzes/results/${studentId}/${quizId}`)
             .then((response) => response.json())
@@ -43,6 +44,8 @@ const QuizResults = () => {
                 </tbody>
             </table>
             <h3>Points: {results.filter((result) => result.is_correct).length} / {results.length}</h3>
+            <h3>Percentage: {results.filter(((result) => result.is_correct).length / results.length * 100)} %</h3>
+            <h3>Grade: {results.filter((result) => result.is_correct).length} / {results.length} %</h3>
         </div>
     );
 };
