@@ -26,7 +26,7 @@ const ResultsList = () => {
 
     const calculatePercentage = (questions) => {
         let points = calculatePoints(questions)
-        return (points / questions.length) * 100;
+        return ((points / questions.length) * 100).toFixed(2);
     };
 
     const calculateGrade = (Percentage) => {
