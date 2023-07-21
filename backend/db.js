@@ -4,7 +4,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'elearning_quiz_merge',
+    database: 'elearning_merge_quiz',
 });
 
 db.connect((err) => {
