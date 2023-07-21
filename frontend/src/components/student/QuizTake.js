@@ -26,8 +26,15 @@ const QuizTake = () => {
   }, [quizId]);
 
   const startTimer = (duration) => {
+    const startTime = Date.now();
+    setTimer(duration);
+
     let intervalId = setInterval(() => {
-      setTimer((prevTimer) => prevTimer - 1);
+      const currentTime = Date.now();
+      const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      const remainingTime = duration - elapsedTime;
+
+      setTimer(remainingTime > 0 ? remainingTime : 0);
     }, 1000);
 
     // Clear the interval when time expires
