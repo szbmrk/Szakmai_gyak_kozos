@@ -7,6 +7,19 @@ const QuizResults = () => {
     const { quizId } = useParams();
     const [results, setResults] = useState([]);
 
+    const CalculateGrade = (percentage) => {
+        if (percentage >= 90) {
+            return "A";
+        } else if (percentage >= 80) {
+            return "B";
+        } else if (percentage >= 70) {
+            return "C";
+        } else if (percentage >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
 
     useEffect(() => {
         fetch(`/quizzes/results/${studentId}/${quizId}`)
@@ -17,6 +30,7 @@ const QuizResults = () => {
             })
             .catch((error) => console.error('Error retrieving results:', error));
     }, [studentId]);
+
 
     return (
         <div data-theme="student" className="list-container">
@@ -44,8 +58,8 @@ const QuizResults = () => {
                 </tbody>
             </table>
             <h3>Points: {results.filter((result) => result.is_correct).length} / {results.length}</h3>
-            <h3>Percentage: {results.filter(((result) => result.is_correct).length / results.length * 100)} %</h3>
-            <h3>Grade: {results.filter((result) => result.is_correct).length} / {results.length} %</h3>
+            <h3>Percentage: {((results.filter((result) => result.is_correct).length / results.length) * 100).toFixed(2)}%</h3>
+            <h3>Grade: {CalculateGrade(((results.filter((result) => result.is_correct).length / results.length) * 100).toFixed(2))}</h3>
         </div>
     );
 };
